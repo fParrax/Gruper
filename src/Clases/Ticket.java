@@ -36,14 +36,14 @@ public class Ticket {
         this.montoPagado = montoPagado;
     }
 
-    public ArrayList getTickets(String agenciax, String fecha01, String fecha02) {
+    public ArrayList getTicketsByAgencia(int idAgencia, String fecha01, String fecha02) {
         ArrayList<Ticket> lista = new ArrayList();
 
         sql = "call `sp.getTicket` (?,?,?)";
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
             con.setCatalog("ag");
             pst = con.prepareCall(sql);
-            pst.setString(1,agenciax);
+            pst.setInt(1,idAgencia);
             pst.setString(2,fecha01+" 00:00:01");
             pst.setString(3,fecha02+" 23:59:59");
             rs = pst.executeQuery();
@@ -67,6 +67,80 @@ public class Ticket {
                         lista.get(index).addJugada(j);
                     }
                 }
+               
+                
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        } finally {
+            cerrar();
+        }
+
+        return lista;
+    }
+    public ArrayList getTicketsByBanquero(int idBanquero, String fecha01, String fecha02) {
+        ArrayList<Agencia> lista = new ArrayList();
+
+        sql = "call `sp.getTicketByBanquero` (?,?,?)";
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
+            pst = con.prepareCall(sql);
+            pst.setInt(1,idBanquero);
+            pst.setString(2,fecha01+" 00:00:01");
+            pst.setString(3,fecha02+" 23:59:59");
+            rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                
+                Agencia agenciaTemp = new Agencia(
+                        rs.getInt("id"),
+                        rs.getInt("numTicket"),
+                        rs.getInt("cupoAnimal"),
+                        rs.getString("serialPc"),
+                        rs.getString("nombreAgencia"),
+                            rs.getString("username"),
+                        rs.getString("pasword"),
+                        rs.getString("estado"),
+                        rs.getDouble("comision")
+                );
+                
+                Ticket ticketTemp = new Ticket(rs.getInt("id"),rs.getString("fecha"),rs.getString("agencia"),
+                rs.getString("serialTicket"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
+                rs.getFloat("totalPremio"),rs.getFloat("montoPagado"));
+                
+                JugadasTicket jugadaTemp = new JugadasTicket(rs.getInt("idJugada"),rs.getInt("idTicket"),
+                rs.getString("programa"),rs.getString("fechaJugada"),rs.getString("sorteo"),
+                rs.getString("animal"),rs.getFloat("montoJugada"),rs.getString("estadoJugada"));
+                
+                
+                if(!lista.contains(agenciaTemp)){
+                    ticketTemp.getJugadas().add(jugadaTemp);
+                    agenciaTemp.getTickets().add(ticketTemp);
+                    lista.add(agenciaTemp);
+                }else{
+                    int indexAgencia = lista.indexOf(agenciaTemp);
+                    if(!lista.get(indexAgencia).getTickets().contains(ticketTemp)){
+                        ticketTemp.getJugadas().add(jugadaTemp);
+                        lista.get(indexAgencia).getTickets().add(ticketTemp);
+                    }else{
+                        int indexTicket = lista.get(indexAgencia).getTickets().indexOf(ticketTemp);
+                        lista.get(indexAgencia).getTickets().get(indexTicket).addJugada(jugadaTemp);
+                    }
+                }
+                /*
+                if(!lista.contains()){
+                     ticketTemp.addJugada(jugadaTemp);
+                     lista.add(ticketTemp); 
+                }else{
+                    int index = lista.indexOf(ticketTemp);
+                    
+                    if(!lista.get(index).getJugadas().contains(jugadaTemp)){
+                        lista.get(index).addJugada(jugadaTemp);
+                    }
+                }
+                */
+                
                
                 
             }
@@ -114,15 +188,14 @@ public class Ticket {
         return my;
     }
 
-    public Ticket getTicketByNum(String nameAgencia,String fecha01, int numTicketx) {
+    public Ticket getTicketByNum(int idAgencia,String fecha01, int numTicketx) {
         Ticket my = new Ticket();
 
         sql = "call `sp.getTicketbyNum` (?,?,?)";
         
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
-            con.setCatalog("ag");
             pst = con.prepareStatement(sql);
-            pst.setString(1,nameAgencia);
+            pst.setInt(1,idAgencia);
             pst.setString(2,fecha01);
             pst.setInt(3,numTicketx);
             

@@ -18,13 +18,14 @@ public class Agencia {
     String serialPC, nombreAgencia,username,password,estado;
     double comision;
     
+    ArrayList<Ticket> tickets = new ArrayList();
     String sql;
     PreparedStatement pst;
     ResultSet rs;
 
     public Agencia() {//Esto es un comentarios para hacer prueba
     }
-
+    
     public Agencia(int id, int numTicket, int cupoAnimal, String serialPC, String nombreAgencia, String nameUsuario, String contraseña, String estado, double comision) {
         this.id = id;
         this.numTicket = numTicket;
@@ -92,7 +93,7 @@ public class Agencia {
         return my;
     }
      
-      public ArrayList listarAgencias() {
+    public ArrayList listarAgencias() {
         ArrayList<Agencia> lista = new ArrayList();
 
         sql = "call `sp.ListarAgencias` ()";
@@ -116,8 +117,76 @@ public class Agencia {
 
         return lista;
     }
-     
-     
+     public ArrayList listarAgenciasByGrupero(int idGrupero) {
+        ArrayList<Agencia> lista = new ArrayList();
+
+        sql = "call `sp.ListarAgenciasByGrupero` (?)";
+        
+        try (Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
+           
+            pst = con.prepareCall(sql);
+            pst.setInt(1,idGrupero);
+            
+            
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                    lista.add( new Agencia(
+                            rs.getInt("id"),
+                            rs.getInt("numTicket"),
+                            rs.getInt("cupoAnimal"),
+                            rs.getString("serialPc"),
+                            rs.getString("nombreAgencia"),
+                            rs.getString("username"),
+                            rs.getString("pasword"),
+                            rs.getString("estado"),
+                            rs.getDouble("comision")
+                    ));
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        } finally {
+            cerrar();
+        }
+
+        return lista;
+    }
+     public ArrayList listarAgenciasByBanquero(int idBanquero) {
+        ArrayList<Agencia> lista = new ArrayList();
+
+        sql = "call `sp.ListarAgenciasByBanquero` (?)";
+        
+        try (Connection con = new ConectarDBCloud("ag").getCon()) {
+            con.setCatalog("ag");
+           
+            pst = con.prepareCall(sql);
+            pst.setInt(1,idBanquero);
+            
+            
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                    lista.add( new Agencia(
+                            rs.getInt("id"),
+                            rs.getInt("numTicket"),
+                            rs.getInt("cupoAnimal"),
+                            rs.getString("serialPc"),
+                            rs.getString("nombreAgencia"),
+                            rs.getString("username"),
+                            rs.getString("pasword"),
+                            rs.getString("estado"),
+                            rs.getDouble("comision")
+                    ));
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+        } finally {
+            cerrar();
+        }
+
+        return lista;
+    }
     public int insert(String nameAgenciax, String usernamex, String paswordx ,
             String seralPcx, int cupoAnimalx, int comisionx){
         int rsp =0;
@@ -229,6 +298,14 @@ public class Agencia {
     @Override
     public String toString() {
         return "Agencia{" + "id=" + id + ", numTicket=" + numTicket + ", cupoAnimal=" + cupoAnimal + ", serialPC=" + serialPC + ", nombreAgencia=" + nombreAgencia + ", username=" + username + ", password=" + password + ", estado=" + estado + ", comision=" + comision + '}';
+    }
+
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(ArrayList<Ticket> tickets) {
+        this.tickets = tickets;
     }
      
      

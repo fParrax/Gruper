@@ -4,6 +4,7 @@
  */
 package Frames;
 
+import Clases.ConectarDBCloud;
 import Panels.viewAgencias;
 import Panels.viewBienvenido;
 
@@ -13,6 +14,7 @@ import Panels.viewBienvenido;
  */
 public class Index extends javax.swing.JFrame {
 
+    public static String fechaHoy="2023-10-31";
     viewAgencias vwAgencias;
     viewBienvenido vwBienvenido;
     public Index() {
@@ -23,6 +25,7 @@ private void iniciar(){
     
     vwBienvenido = new viewBienvenido();
     scrollPane.setViewportView(vwBienvenido);
+    fechaHoy = new ConectarDBCloud("ag").tomarFecha();
     
    // vwAgencias = new viewAgencias();
 }

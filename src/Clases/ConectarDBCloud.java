@@ -28,7 +28,7 @@ public class ConectarDBCloud {
     String user2 ="sp" ;
     String pass2 ="devSoft23#" ;
      
-     
+   
     
     static BasicDataSource ds = new BasicDataSource();
     Properties propiedades = new Properties();

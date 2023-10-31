@@ -198,7 +198,7 @@ public class newResultado extends javax.swing.JFrame {
                txtFecha.getText(),
                programa,
                sorteo,
-               invertAnimal(animal)+animal
+               AnimalConvertNameToNumber(animal)+animal
        );
                int rsp = resultado.insert();
                if(rsp>0){
@@ -265,12 +265,12 @@ public class newResultado extends javax.swing.JFrame {
     private void llenarAnimales(){
         comboResultado.removeAllItems();
         for (int i = -1; i < 37; i++) {
-            comboResultado.addItem(getAnimal(i));
+            comboResultado.addItem(AnimalConvertNumberToLetter(i));
         }
     }
 
    
-    public String getAnimal(int numero) {
+    public String AnimalConvertNumberToLetter(int numero) {
         String animal = "";
 
         if (true) {
@@ -394,7 +394,7 @@ public class newResultado extends javax.swing.JFrame {
         return animal;
     }
     
-    public String invertAnimal(String nombreAnimal) {
+    public String AnimalConvertNameToNumber(String nombreAnimal) {
     String animal = "";
 
     switch (nombreAnimal) {
