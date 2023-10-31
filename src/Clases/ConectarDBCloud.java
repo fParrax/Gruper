@@ -23,7 +23,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 public class ConectarDBCloud {
      static Connection con = null;
 
-     private static  String url = "jdbc:mysql://capsperu.dyndns.org/";
+    // private static  String url = "jdbc:mysql://c1046.gconex.com/";
+      private static  String url = "jdbc:mysql://capsperu.dyndns.org/";
     String user2 ="sp" ;
     String pass2 ="devSoft23#" ;
      
@@ -47,7 +48,7 @@ public class ConectarDBCloud {
                 ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
                 ds.setUsername(user2);
                 ds.setPassword(pass2);
-                ds.setUrl(url);
+                ds.setUrl(url+dataBase);
                 ds.setInitialSize(1);
                 ds.setMaxTotal(2);
                 ds.setTestWhileIdle(true);
