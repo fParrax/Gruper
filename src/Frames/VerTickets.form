@@ -190,9 +190,9 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
                 <StringItem index="0" value="Todos"/>
-                <StringItem index="1" value="Premiados"/>
-                <StringItem index="2" value="Pagados"/>
-                <StringItem index="3" value="Anulados"/>
+                <StringItem index="1" value="Premiado"/>
+                <StringItem index="2" value="Pagado"/>
+                <StringItem index="3" value="Anulado"/>
               </StringArray>
             </Property>
           </Properties>
@@ -447,8 +447,9 @@
             <Component class="rojerusan.RSTableMetro" name="tablaTickets">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="0">
+                  <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="#" type="java.lang.Object"/>
+                    <Column editable="false" title="Agencia" type="java.lang.Object"/>
                     <Column editable="false" title="Ticket" type="java.lang.Object"/>
                     <Column editable="false" title="Fecha" type="java.lang.Object"/>
                     <Column editable="false" title="Monto" type="java.lang.Object"/>
@@ -477,6 +478,11 @@
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="80" minWidth="80" prefWidth="80" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -540,10 +546,11 @@
             <Component class="rojerusan.RSTableMetro" name="tablaJugadas">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="0">
+                  <Table columnCount="4" rowCount="0">
                     <Column editable="false" title="Sorteo" type="java.lang.Object"/>
                     <Column editable="false" title="Jugada" type="java.lang.Object"/>
                     <Column editable="false" title="Monto" type="java.lang.Object"/>
+                    <Column editable="false" title="Estado" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="altoHead" type="int" value="30"/>
@@ -567,6 +574,11 @@
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>

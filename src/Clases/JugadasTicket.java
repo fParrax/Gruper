@@ -38,7 +38,7 @@ public class JugadasTicket {
     public int hashCode() {
         return Objects.hash(id, idTicket,programa, fecha,  sorteo,  animal,  monto,  estado);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -50,13 +50,32 @@ public class JugadasTicket {
         if (getClass() != obj.getClass()) {
             return false;
         }
-
-        JugadasTicket jt = (JugadasTicket) obj;
-
-        return Float.compare(id, jt.id) == 0 && Float.compare(idTicket, jt.idTicket) == 0 &&
-                fecha.equals(jt.fecha) && sorteo.equals(jt.sorteo) && animal.equals(jt.animal) &&
-                Float.compare(monto, jt.monto) == 0 && estado.equals(jt.estado) && programa.equals(jt.programa);
+        final JugadasTicket other = (JugadasTicket) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.idTicket != other.idTicket) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.monto) != Float.floatToIntBits(other.monto)) {
+            return false;
+        }
+        if (!Objects.equals(this.fecha, other.fecha)) {
+            return false;
+        }
+        if (!Objects.equals(this.sorteo, other.sorteo)) {
+            return false;
+        }
+        if (!Objects.equals(this.animal, other.animal)) {
+            return false;
+        }
+        if (!Objects.equals(this.programa, other.programa)) {
+            return false;
+        }
+        return Objects.equals(this.estado, other.estado);
     }
+    
+    
 
     @Override
     public String toString() {

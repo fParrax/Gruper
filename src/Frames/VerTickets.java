@@ -7,15 +7,11 @@ package Frames;
 
 import Clases.Agencia;
 import Clases.JugadasTicket;
-import Clases.NTPService;
 import Clases.Ticket;
 import java.awt.Image;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,6 +26,7 @@ public class VerTickets extends javax.swing.JFrame {
     DefaultTableModel modeloTickets;
     DefaultTableModel modeloJugadas;
     ArrayList<Ticket> tickets;
+    ArrayList<Ticket> allTickets = new ArrayList();
     ArrayList<Agencia> agencias;
    
     public VerTickets() {
@@ -88,7 +85,7 @@ public class VerTickets extends javax.swing.JFrame {
         setTitle("Visualización de Tickets");
 
         panelFiltros.setBackground(new java.awt.Color(255, 255, 255));
-        panelFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros de búsqueda de tickets", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
+        panelFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros de búsqueda de tickets", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("DESDE");
@@ -113,7 +110,7 @@ public class VerTickets extends javax.swing.JFrame {
         jLabel7.setText("Estado del Ticket");
 
         comboEstadoTicket.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        comboEstadoTicket.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Premiados", "Pagados", "Anulados" }));
+        comboEstadoTicket.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Premiado", "Pagado", "Anulado" }));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -179,7 +176,7 @@ public class VerTickets extends javax.swing.JFrame {
         );
 
         panelResultados.setBackground(new java.awt.Color(255, 255, 255));
-        panelResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados de la Búsqueda", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
+        panelResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados de la Búsqueda", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
 
         panelInfoTicket.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Información del Ticket", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(102, 102, 102))); // NOI18N
 
@@ -269,11 +266,11 @@ public class VerTickets extends javax.swing.JFrame {
 
             },
             new String [] {
-                "#", "Ticket", "Fecha", "Monto", "Estado"
+                "#", "Agencia", "Ticket", "Fecha", "Monto", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -315,11 +312,11 @@ public class VerTickets extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sorteo", "Jugada", "Monto"
+                "Sorteo", "Jugada", "Monto", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -432,13 +429,24 @@ public class VerTickets extends javax.swing.JFrame {
             
             
             modeloJugadas.setRowCount(0);
-
-            Ticket ticketSeleccionado = tickets.stream()
+              Ticket ticketSeleccionado = new Ticket();  
+              if(comboAgencias.getSelectedIndex()==0){
+                  ticketSeleccionado = allTickets.stream()
                     .filter(t
                             -> Float.compare(
                             t.getId(),
                             numTicket) == 0
                     ).findFirst().get();
+              }else{
+                  ticketSeleccionado = tickets.stream()
+                    .filter(t
+                            -> Float.compare(
+                            t.getId(),
+                            numTicket) == 0
+                    ).findFirst().get();
+              }
+              
+             
 
             lbNumticket.setText(ticketSeleccionado.getId() + "");
             lbFecha.setText(ticketSeleccionado.getFecha());
@@ -448,7 +456,7 @@ public class VerTickets extends javax.swing.JFrame {
             lbTotalPagado.setText(ticketSeleccionado.getMontoPagado() + "");
             for (JugadasTicket jugada : ticketSeleccionado.getJugadas()) {
                 modeloJugadas.addRow(new Object[]{
-                    jugada.getSorteo(), jugada.getAnimal(), jugada.getMonto()
+                    jugada.getSorteo(), jugada.getAnimal(), jugada.getMonto(),jugada.getEstado()
                 });
             }
 
@@ -459,38 +467,61 @@ public class VerTickets extends javax.swing.JFrame {
     private void btnBuscarTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarTicketActionPerformed
         String fecha01 = fechaDesde.getText();
         String fecha02 = fechaHasta.getText();
-
-        //seleccionado Todos
-        if(comboAgencias.getSelectedIndex() == 0){
-            tickets = (ArrayList) new Ticket().getTicketsByBanquero(1,fecha01, fecha02).clone();
-        }else{//Agencia en especifico
-            Agencia agencia = agencias.stream()
-                    .filter(t-> 
-                            t.getNombreAgencia().equalsIgnoreCase(comboEstadoTicket.getSelectedItem().toString())
-                    ).findFirst().get();    
-            
-            tickets = (ArrayList) new Ticket().getTicketsByAgencia(agencia.getId(),fecha01, fecha02).clone();
-        }
-        
         modeloTickets.setRowCount(0);
-            String estado = comboEstadoTicket.getSelectedItem().toString();
-            estado = estado.equalsIgnoreCase("todos")
+        double totalVendido =0.0;
+        double totalAnulado =0.0;
+        
+         String estado = comboEstadoTicket.getSelectedIndex() == 0
                     ?""
-                    :estado;
-            double totalVendido =0.0;
-            double totalAnulado =0.0;
-            for (Ticket ticket : tickets) {
-                if(ticket.getEstado().toLowerCase().contains(estado)){
-                   modeloTickets.addRow(new Object[]{
-                    ticket.getId(),ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(), ticket.getEstado()
-                }); 
-                }
-                if(ticket.getEstado().equalsIgnoreCase("anulado")){
-                    totalAnulado+=ticket.getTotalJugado();
-                }else{
-                    totalVendido+=ticket.getTotalJugado();
+                    :comboEstadoTicket.getSelectedItem().toString().toLowerCase();
+        
+        if (comboAgencias.getSelectedIndex() == 0) {
+            agencias = (ArrayList) new Ticket().getTicketsByBanquero(1, fecha01, fecha02).clone();
+
+            allTickets.clear();
+            for (Agencia agencia : agencias) {
+                for (Ticket ticket : agencia.getTickets()) {
+                    if (ticket.getEstado().toLowerCase().contains(estado)) {
+                        allTickets.add(ticket);
+                        modeloTickets.addRow(new Object[]{
+                            ticket.getId(),agencia.getNombreAgencia(), ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(), ticket.getEstado()
+                        });
+                    }
+                    if (ticket.getEstado().equalsIgnoreCase("anulado")) {
+                        totalAnulado += ticket.getTotalJugado();
+                    } else {
+                        totalVendido += ticket.getTotalJugado();
+                    }
                 }
             }
+        } else {//Agencia en especifico
+            Agencia seleccionado = agencias.stream()
+                    .filter(t
+                            -> t.getNombreAgencia().equalsIgnoreCase(comboEstadoTicket.getSelectedItem().toString())
+                    ).findFirst().get();
+
+            tickets = (ArrayList) new Ticket().getTicketsByAgencia(seleccionado.getId(), fecha01, fecha02).clone();
+
+            for (Ticket ticket : tickets) {
+                if (ticket.getEstado().toLowerCase().contains(estado)) {
+                    modeloTickets.addRow(new Object[]{
+                        ticket.getId(),seleccionado.getNombreAgencia(), ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(), ticket.getEstado()
+                    });
+                }
+                if (ticket.getEstado().equalsIgnoreCase("anulado")) {
+                    totalAnulado += ticket.getTotalJugado();
+                } else {
+                    totalVendido += ticket.getTotalJugado();
+                }
+            }
+        }
+
+
+           
+            
+            
+            
+            
             lbTotalAnulado.setText(totalAnulado+"");
             lbTotalVendido.setText(totalVendido+"");
     }//GEN-LAST:event_btnBuscarTicketActionPerformed

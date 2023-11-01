@@ -1,6 +1,7 @@
 
 package Frames;
 
+import Clases.ConectarDBCloud;
 import Clases.Resultado;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
@@ -261,6 +262,8 @@ public class newResultado extends javax.swing.JFrame {
         String hoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         txtFecha.setText(hoy);
         llenarAnimales();
+        
+        
     }
     private void llenarAnimales(){
         comboResultado.removeAllItems();

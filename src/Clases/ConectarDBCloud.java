@@ -22,7 +22,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 public class ConectarDBCloud {
      static Connection con = null;
-
+                                              
     private static  String url = "jdbc:mysql://c1046.gconex.com/";
    //  private static  String url = "jdbc:mysql://capsperu.dyndns.org/";
     String user2 ="sp" ;
@@ -131,7 +131,6 @@ public class ConectarDBCloud {
         String fecha = "";
         try (Connection conex = new ConectarDBCloud("ag").getCon()) {
                 
-con.setCatalog("ag");
             String sql = "select replace(CURDATE(),'/','-') as a";
             PreparedStatement s = conex.prepareStatement(sql);
             ResultSet rs = s.executeQuery();

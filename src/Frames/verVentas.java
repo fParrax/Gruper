@@ -20,6 +20,7 @@ public class verVentas extends javax.swing.JFrame {
 
     DefaultTableModel modelo;
     ArrayList<Agencia> agencias;
+    ArrayList<Ticket> tickets;
     public verVentas() {
         initComponents();
         iniciarDatos();
@@ -217,7 +218,7 @@ public class verVentas extends javax.swing.JFrame {
                     .addComponent(txtFechaHasta)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -249,33 +250,51 @@ public class verVentas extends javax.swing.JFrame {
        
         double vendido =0,premios =0, comision=0,saldo=0;
         String fecha01 = txtFechaDesde.getText(),fecha02 = txtFechaHasta.getText();
-        
-        
-        agencias = (ArrayList) new Ticket().getTicketsByBanquero(1,fecha01, fecha02).clone();
-        
-        modelo.setRowCount(0);
-        
-        for(Agencia agencia:agencias){
+         modelo.setRowCount(0);
+         
+        if(comboAgencias.getSelectedIndex() == 0){
+          agencias = (ArrayList) new Ticket().getTicketsByBanquero(1,fecha01, fecha02).clone();
+          
+          for(Agencia agencia:agencias){
+              comision=0.0;
+              saldo =0.0;
+              vendido=0.0;
+              premios =0.0;
+              System.out.println("Agencia: "+agencia.getNombreAgencia()+" Ticket: "+agencia.getTickets().size());
             for (Ticket ticket : agencia.getTickets()) {
                 if (!ticket.getEstado().equalsIgnoreCase("anulado")) {
                     vendido += ticket.getTotalJugado();
                     premios += ticket.getTotalPremio();
                 }
             }
-            comision= (vendido*agencia.getComision());
+            comision= (vendido*(agencia.getComision()/100));
             String comi = new DecimalFormat("#.##").format(comision);
             saldo= vendido -(comision+premios);
             String sal = new DecimalFormat("#.##").format(saldo);
             modelo.addRow(new Object[]{agencia.getNombreAgencia(),vendido,comi,premios,sal});
         }
-        
-        
-        
-        
-        
-        
-        
-        
+        }else{
+            Agencia seleccionada = agencias.stream()
+                            .filter(t-> 
+                                    t.getNombreAgencia().equalsIgnoreCase(comboAgencias.getSelectedItem().toString()))
+                    .findFirst().get();
+            
+            tickets = (ArrayList) new Ticket().getTicketsByAgencia(seleccionada.getId(), fecha01, fecha02).clone();
+            
+            
+            for (Ticket ticket : tickets) {
+                if (!ticket.getEstado().equalsIgnoreCase("anulado")) {
+                    vendido += ticket.getTotalJugado();
+                    premios += ticket.getTotalPremio();
+                }
+            }
+            comision= (vendido*(seleccionada.getComision()/100));
+            String comi = new DecimalFormat("#.##").format(comision);
+            saldo= vendido -(comision+premios);
+            String sal = new DecimalFormat("#.##").format(saldo);
+            modelo.addRow(new Object[]{seleccionada.getNombreAgencia(),vendido,comi,premios,sal});
+            
+        }
         
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -347,12 +366,12 @@ public class verVentas extends javax.swing.JFrame {
         modelo=(DefaultTableModel)tabla.getModel();
         txtFechaDesde.setText(Index.fechaHoy);
         txtFechaHasta.setText(Index.fechaHoy);
-        llenarAgencias();
+        new Thread(this::llenarAgencias).start();
         
     }
     
     public void llenarAgencias(){
-        ArrayList<Agencia> agencias = (ArrayList) new Agencia().listarAgenciasByBanquero(1).clone();
+        agencias = (ArrayList) new Agencia().listarAgenciasByBanquero(1).clone();
         comboAgencias.removeAllItems();
         comboAgencias.addItem("Todos");
         for(Agencia agencia:agencias){

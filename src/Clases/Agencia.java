@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -300,6 +301,60 @@ public class Agencia {
         return "Agencia{" + "id=" + id + ", numTicket=" + numTicket + ", cupoAnimal=" + cupoAnimal + ", serialPC=" + serialPC + ", nombreAgencia=" + nombreAgencia + ", username=" + username + ", password=" + password + ", estado=" + estado + ", comision=" + comision + '}';
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + this.id;
+        hash = 47 * hash + this.numTicket;
+        hash = 47 * hash + this.cupoAnimal;
+        hash = 47 * hash + Objects.hashCode(this.serialPC);
+        hash = 47 * hash + Objects.hashCode(this.nombreAgencia);
+        hash = 47 * hash + Objects.hashCode(this.username);
+        hash = 47 * hash + Objects.hashCode(this.password);
+        hash = 47 * hash + Objects.hashCode(this.estado);
+        hash = 47 * hash + (int) (Double.doubleToLongBits(this.comision) ^ (Double.doubleToLongBits(this.comision) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Agencia other = (Agencia) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.numTicket != other.numTicket) {
+            return false;
+        }
+        if (this.cupoAnimal != other.cupoAnimal) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.comision) != Double.doubleToLongBits(other.comision)) {
+            return false;
+        }
+        if (!Objects.equals(this.serialPC, other.serialPC)) {
+            return false;
+        }
+        if (!Objects.equals(this.nombreAgencia, other.nombreAgencia)) {
+            return false;
+        }
+        if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
+        return Objects.equals(this.estado, other.estado);
+    }
+
     public ArrayList<Ticket> getTickets() {
         return tickets;
     }
@@ -308,7 +363,9 @@ public class Agencia {
         this.tickets = tickets;
     }
      
-     
+     public void addTicket(Ticket t){
+         tickets.add(t);
+     }
     public int getId() {
         return id;
     }

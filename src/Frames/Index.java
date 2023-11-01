@@ -42,6 +42,8 @@ private void iniciar(){
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        mitemVerVentas = new javax.swing.JMenuItem();
+        mitemVerTickets = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -93,6 +95,23 @@ private void iniciar(){
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Ventas");
+
+        mitemVerVentas.setText("Ver Ventas");
+        mitemVerVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitemVerVentasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mitemVerVentas);
+
+        mitemVerTickets.setText("Ver Tickets");
+        mitemVerTickets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitemVerTicketsActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mitemVerTickets);
+
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Reportes");
@@ -118,6 +137,14 @@ private void iniciar(){
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
      new newResultado().setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void mitemVerVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemVerVentasActionPerformed
+      new verVentas().setVisible(true);
+    }//GEN-LAST:event_mitemVerVentasActionPerformed
+
+    private void mitemVerTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemVerTicketsActionPerformed
+       new VerTickets().setVisible(true);
+    }//GEN-LAST:event_mitemVerTicketsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,6 +188,8 @@ private void iniciar(){
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem mitemVerTickets;
+    private javax.swing.JMenuItem mitemVerVentas;
     private javax.swing.JPanel panelCentral;
     private javax.swing.JPanel panelSuperior;
     private javax.swing.JScrollPane scrollPane;

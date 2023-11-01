@@ -94,35 +94,50 @@ public class Ticket {
             while (rs.next()) {
                 
                 Agencia agenciaTemp = new Agencia(
-                        rs.getInt("id"),
-                        rs.getInt("numTicket"),
+                        rs.getInt("myIdAgencia"),
+                        rs.getInt("myNumTicket"),
                         rs.getInt("cupoAnimal"),
                         rs.getString("serialPc"),
                         rs.getString("nombreAgencia"),
                             rs.getString("username"),
                         rs.getString("pasword"),
-                        rs.getString("estado"),
+                        rs.getString("myEstado"),
                         rs.getDouble("comision")
                 );
                 
-                Ticket ticketTemp = new Ticket(rs.getInt("id"),rs.getString("fecha"),rs.getString("agencia"),
-                rs.getString("serialTicket"),rs.getInt("numTicket"),rs.getString("estado"),rs.getFloat("totalJugado"),
-                rs.getFloat("totalPremio"),rs.getFloat("montoPagado"));
+                Ticket ticketTemp = new Ticket(
+                        rs.getInt("id"),
+                        rs.getString("fecha"),
+                        rs.getString("agencia"),
+                        rs.getString("serialTicket"),
+                        rs.getInt("numTicket"),
+                        rs.getString("estado"),
+                        rs.getFloat("totalJugado"),
+                        rs.getFloat("totalPremio"),
+                        rs.getFloat("montoPagado")
+                );
                 
-                JugadasTicket jugadaTemp = new JugadasTicket(rs.getInt("idJugada"),rs.getInt("idTicket"),
-                rs.getString("programa"),rs.getString("fechaJugada"),rs.getString("sorteo"),
-                rs.getString("animal"),rs.getFloat("montoJugada"),rs.getString("estadoJugada"));
+                JugadasTicket jugadaTemp = new JugadasTicket(
+                        rs.getInt("idJugada"),
+                        rs.getInt("idTicket"),
+                        rs.getString("programa"),
+                        rs.getString("fechaJugada"),
+                        rs.getString("sorteo"),
+                        rs.getString("animal"),
+                        rs.getFloat("montoJugada"),
+                        rs.getString("estadoJugada")
+                );
                 
                 
                 if(!lista.contains(agenciaTemp)){
-                    ticketTemp.getJugadas().add(jugadaTemp);
-                    agenciaTemp.getTickets().add(ticketTemp);
+                    ticketTemp.addJugada(jugadaTemp);
+                    agenciaTemp.addTicket(ticketTemp);
                     lista.add(agenciaTemp);
                 }else{
                     int indexAgencia = lista.indexOf(agenciaTemp);
                     if(!lista.get(indexAgencia).getTickets().contains(ticketTemp)){
-                        ticketTemp.getJugadas().add(jugadaTemp);
-                        lista.get(indexAgencia).getTickets().add(ticketTemp);
+                        ticketTemp.addJugada(jugadaTemp);
+                        lista.get(indexAgencia).addTicket(ticketTemp);
                     }else{
                         int indexTicket = lista.get(indexAgencia).getTickets().indexOf(ticketTemp);
                         lista.get(indexAgencia).getTickets().get(indexTicket).addJugada(jugadaTemp);
@@ -316,12 +331,32 @@ public class Ticket {
         if (getClass() != obj.getClass()) {
             return false;
         }
-
-        Ticket t = (Ticket) obj;
-
-        return Float.compare(id, t.id) == 0 && fecha.equals(t.fecha) &&agencia.equals(t.agencia)&& serial.equals(t.serial) && estado.equals(t.estado) &&
-                Float.compare(totalJugado, t.totalJugado) == 0 && Float.compare(totalPremio, t.totalPremio) == 0 &&
-                Float.compare(montoPagado, t.montoPagado) == 0 && Float.compare(numTicket, t.numTicket) == 0;
+        final Ticket other = (Ticket) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.numTicket != other.numTicket) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.totalJugado) != Float.floatToIntBits(other.totalJugado)) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.totalPremio) != Float.floatToIntBits(other.totalPremio)) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.montoPagado) != Float.floatToIntBits(other.montoPagado)) {
+            return false;
+        }
+        if (!Objects.equals(this.fecha, other.fecha)) {
+            return false;
+        }
+        if (!Objects.equals(this.serial, other.serial)) {
+            return false;
+        }
+        if (!Objects.equals(this.estado, other.estado)) {
+            return false;
+        }
+        return Objects.equals(this.agencia, other.agencia);
     }
     
     
