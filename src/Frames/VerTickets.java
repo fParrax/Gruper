@@ -495,11 +495,13 @@ public class VerTickets extends javax.swing.JFrame {
                 }
             }
         } else {//Agencia en especifico
+            String nameAgencia = comboAgencias.getSelectedItem().toString();
+            System.out.println("nameAgencia: "+nameAgencia);
             Agencia seleccionado = agencias.stream()
                     .filter(t
-                            -> t.getNombreAgencia().equalsIgnoreCase(comboEstadoTicket.getSelectedItem().toString())
+                            -> t.getNombreAgencia().equalsIgnoreCase(nameAgencia)
                     ).findFirst().get();
-
+            System.out.println("Seleccionado: "+seleccionado.toString());
             tickets = (ArrayList) new Ticket().getTicketsByAgencia(seleccionado.getId(), fecha01, fecha02).clone();
 
             for (Ticket ticket : tickets) {
