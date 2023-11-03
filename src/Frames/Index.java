@@ -40,7 +40,8 @@ private void iniciar(){
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        miIngresarResultado = new javax.swing.JMenuItem();
+        miVerResultados = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mitemVerVentas = new javax.swing.JMenuItem();
         mitemVerTickets = new javax.swing.JMenuItem();
@@ -84,13 +85,21 @@ private void iniciar(){
 
         jMenu1.setText("Resultados");
 
-        jMenuItem1.setText("Ingresar Resultado");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        miIngresarResultado.setText("Ingresar Resultado");
+        miIngresarResultado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                miIngresarResultadoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(miIngresarResultado);
+
+        miVerResultados.setText("Ver Resultados");
+        miVerResultados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVerResultadosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(miVerResultados);
 
         jMenuBar1.add(jMenu1);
 
@@ -134,9 +143,9 @@ private void iniciar(){
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void miIngresarResultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miIngresarResultadoActionPerformed
      new newResultado().setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_miIngresarResultadoActionPerformed
 
     private void mitemVerVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemVerVentasActionPerformed
       new verVentas().setVisible(true);
@@ -145,6 +154,10 @@ private void iniciar(){
     private void mitemVerTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemVerTicketsActionPerformed
        new VerTickets().setVisible(true);
     }//GEN-LAST:event_mitemVerTicketsActionPerformed
+
+    private void miVerResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerResultadosActionPerformed
+       new verResultados().setVisible(true);
+    }//GEN-LAST:event_miVerResultadosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,7 +200,8 @@ private void iniciar(){
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem miIngresarResultado;
+    private javax.swing.JMenuItem miVerResultados;
     private javax.swing.JMenuItem mitemVerTickets;
     private javax.swing.JMenuItem mitemVerVentas;
     private javax.swing.JPanel panelCentral;
