@@ -26,68 +26,14 @@ public class Scraping_allPost {
                 Document document = getHtmlDocument(url);
 				
                 // Busco todas las historias de meneame que estan dentro de: 
-                Elements entradas = document.select("div.col-md-8.col-sm-12.resultados");
+                Elements entradas = document.select("time");
                // Elements entradas = document.select(".row.resultado");
 				            
                 // Paseo cada una de las entradas
                 for (Element elem : entradas) {
-                    String titulo = elem.getElementsByClass("col-xs-6 col-sm-3").text();
-                    if(titulo.contains("Lotto Activo") ){//|| titulo.contains("La Granjita")
-                        String separador = Pattern.quote("Animalito Lotto Activo ");
-                        String[] arreglo = titulo.split(separador);
-                        for(String valor : arreglo){
-                            if(!valor.contains("- - -")){
-                                /*
-                                    Valor Imprime: 20 - CERDO 09:00
-                                        #Animal - NombreAnimal - HoraSorteo
-                                
-                                    Resultado Imprime: 
-                                    [0]=Animal=20
-                                    [1]=Separador=-
-                                    [2]=TextoAnimal=CERDO
-                                    [3]=HoraSorteo=09:00
-                                */
-                                
-                                String separador2 = Pattern.quote(" ");
-                                String[] resultado = valor.split(separador2);
-                                if(resultado.length > 1){
-                                    String numAnimal = resultado[0];
-                                    String horaSorteo = resultado[3];
-                                    System.out.println("Lotto Activo Salió el "+numAnimal+" para las "+horaSorteo);
-                                }
-                                 
-                                
-                            }
-                        }
-                    }else if(titulo.contains("La Granjita") ){
-                        String separador = Pattern.quote("Animalito La Granjita ");
-                        String[] arreglo = titulo.split(separador);
-                        for(String valor : arreglo){
-                            if(!valor.contains("- - -")){
-                                /*
-                                    Valor Imprime: 20 - CERDO 09:00
-                                        #Animal - NombreAnimal - HoraSorteo
-                                
-                                    Resultado Imprime: 
-                                    [0]=Animal=20
-                                    [1]=Separador=-
-                                    [2]=TextoAnimal=CERDO
-                                    [3]=HoraSorteo=09:00
-                                */
-                                
-                                String separador2 = Pattern.quote(" ");
-                                String[] resultado = valor.split(separador2);
-                                if(resultado.length > 1){
-                                    String numAnimal = resultado[0];
-                                    String horaSorteo = resultado[3];
-                                    System.out.println("Granjita Salió el "+numAnimal+" para las "+horaSorteo);
-                                }
-                            }
-                        }
-                    }
-                    //System.out.println("titulo: "+titulo);
-					
-					
+                   //String separador1 = Pattern.quote(",");
+                   //String[] primeraParte = elem.attr"datetime") .split(separador1);
+	           System.out.println(elem.attr("datetime"));		
                 }
 		
             }else{

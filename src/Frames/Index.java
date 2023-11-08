@@ -85,7 +85,7 @@ private void iniciar(){
 
         jMenu1.setText("Resultados");
 
-        miIngresarResultado.setText("Ingresar Resultado");
+        miIngresarResultado.setText("Corregir Resultado");
         miIngresarResultado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miIngresarResultadoActionPerformed(evt);

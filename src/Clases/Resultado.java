@@ -38,26 +38,48 @@ public class Resultado {
     }
     
     
-    public int insert(){
+  public int insert(){
         int rsp=0;
         
          try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
              con.setCatalog("ag");
              sql="call `sp.InsertSorteo` (?,?,?,?)";
-             pst = con.prepareStatement(sql);
-             pst.setString(1,this.fecha);
-             pst.setString(2,this.programa);
-             pst.setString(3,this.animal);
-             pst.setString(4,this.sorteo);
-             rsp = pst.executeUpdate();
+             PreparedStatement pst2 = con.prepareStatement(sql);
+             pst2.setString(1,this.fecha);
+             pst2.setString(2,this.programa);
+             pst2.setString(3,this.animal);
+             pst2.setString(4,this.sorteo);
+             if(anular(fecha, sorteo)){
+                  rsp = pst2.executeUpdate();
+             }
+            
         } catch (Exception e) {
-            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Resultado.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
         } finally {
             cerrar();
         }
         
         return rsp;
+    }
+    
+    
+    
+    public boolean anular(String fecha, String sorteo){
+         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+             sql="update resultados set estado='Anulado' where fechaSorteo=? and sorteo=?";
+             pst = con.prepareStatement(sql);
+             pst.setString(1,fecha);
+             pst.setString(2,sorteo);
+             pst.executeUpdate();
+             return true;
+         }catch (Exception e) {
+            Logger.getLogger(Resultado.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+            return false;
+        } finally {
+            cerrar();
+        }
     }
     
     public ArrayList getResultados(String fecha01, String fecha02){

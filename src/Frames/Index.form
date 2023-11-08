@@ -16,7 +16,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="miIngresarResultado">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ingresar Resultado"/>
+                <Property name="text" type="java.lang.String" value="Corregir Resultado"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miIngresarResultadoActionPerformed"/>

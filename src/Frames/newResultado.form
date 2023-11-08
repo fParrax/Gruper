@@ -72,7 +72,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   <Component id="btnIngresar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="299" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="267" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -91,9 +91,13 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnIngresar" min="-2" pref="39" max="-2" attributes="0"/>
+<<<<<<< HEAD
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+=======
+                  <EmptySpace min="0" pref="43" max="32767" attributes="0"/>
+>>>>>>> ae8e8548361ff3d980ab8f169d19480c545b8351
               </Group>
           </Group>
         </DimensionLayout>
@@ -267,7 +271,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="15" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Ingresar Resultado"/>
+            <Property name="text" type="java.lang.String" value="Corregir e Ingresar Resultado"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIngresarActionPerformed"/>
