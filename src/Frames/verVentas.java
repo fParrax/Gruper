@@ -9,7 +9,9 @@ import Clases.Agencia;
 import Clases.Ticket;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -45,10 +47,10 @@ public class verVentas extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        txtFechaDesde = new javax.swing.JTextField();
-        txtFechaHasta = new javax.swing.JTextField();
         comboAgencias = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        txtDesde = new com.toedter.calendar.JDateChooser();
+        txtHasta = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -140,31 +142,14 @@ public class verVentas extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Desde");
 
-        txtFechaDesde.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFechaDesde.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFechaDesde.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFechaDesdeKeyPressed(evt);
-            }
-        });
-
-        txtFechaHasta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFechaHasta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFechaHasta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaHastaActionPerformed(evt);
-            }
-        });
-        txtFechaHasta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFechaHastaKeyPressed(evt);
-            }
-        });
-
         comboAgencias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Agencia:");
+
+        txtDesde.setDateFormatString("yyyy-MM-dd");
+
+        txtHasta.setDateFormatString("yyyy-MM-dd");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -180,11 +165,11 @@ public class verVentas extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addComponent(txtDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())
@@ -212,11 +197,13 @@ public class verVentas extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtFechaDesde)
-                    .addComponent(txtFechaHasta)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDesde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtHasta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                 .addContainerGap())
@@ -237,10 +224,6 @@ public class verVentas extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtFechaHastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaHastaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaHastaActionPerformed
-
     private void tablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_tablaKeyPressed
@@ -249,7 +232,7 @@ public class verVentas extends javax.swing.JFrame {
        
        
         double vendido =0,premios =0, comision=0,saldo=0;
-        String fecha01 = txtFechaDesde.getText(),fecha02 = txtFechaHasta.getText();
+        String fecha01 = getFechaDesde(),fecha02 = getFechaHasta();
          modelo.setRowCount(0);
          
         if(comboAgencias.getSelectedIndex() == 0){
@@ -297,18 +280,6 @@ public class verVentas extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void txtFechaHastaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaHastaKeyPressed
-      if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-          btnBuscar.doClick();
-      }
-    }//GEN-LAST:event_txtFechaHastaKeyPressed
-
-    private void txtFechaDesdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaDesdeKeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-          txtFechaHasta.requestFocus();
-      }
-    }//GEN-LAST:event_txtFechaDesdeKeyPressed
 
     /**
      * @param args the command line arguments
@@ -358,14 +329,14 @@ public class verVentas extends javax.swing.JFrame {
     private javax.swing.JPanel panelFiltros;
     private javax.swing.JPanel panelTitulo;
     private rojerusan.RSTableMetro tabla;
-    private javax.swing.JTextField txtFechaDesde;
-    private javax.swing.JTextField txtFechaHasta;
+    private com.toedter.calendar.JDateChooser txtDesde;
+    private com.toedter.calendar.JDateChooser txtHasta;
     // End of variables declaration//GEN-END:variables
 
     private void iniciarDatos() {
         modelo=(DefaultTableModel)tabla.getModel();
-        txtFechaDesde.setText(Index.fechaHoy);
-        txtFechaHasta.setText(Index.fechaHoy);
+        txtDesde.setDate(new Date());
+        txtHasta.setDate(new Date());
         new Thread(this::llenarAgencias).start();
         
     }
@@ -378,4 +349,12 @@ public class verVentas extends javax.swing.JFrame {
             comboAgencias.addItem(agencia.getNombreAgencia());
         }
     }
+    public String getFechaDesde(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(txtDesde.getDate());
+    }
+    public String getFechaHasta(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(txtHasta.getDate());
+    }
+    
+    
 }

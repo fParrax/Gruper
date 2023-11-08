@@ -6,6 +6,7 @@
 package Frames;
 
 import Clases.Agencia;
+import Clases.CupoAnimal;
 import Clases.JugadasTicket;
 import Clases.Ticket;
 import java.awt.Image;
@@ -52,12 +53,12 @@ public class VerTickets extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnBuscarTicket = new javax.swing.JButton();
-        fechaHasta = new javax.swing.JTextField();
-        fechaDesde = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         comboEstadoTicket = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         comboAgencias = new javax.swing.JComboBox<>();
+        fechaDesde = new com.toedter.calendar.JDateChooser();
+        fechaHasta = new com.toedter.calendar.JDateChooser();
         panelResultados = new javax.swing.JPanel();
         panelInfoTicket = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -85,7 +86,7 @@ public class VerTickets extends javax.swing.JFrame {
         setTitle("Visualización de Tickets");
 
         panelFiltros.setBackground(new java.awt.Color(255, 255, 255));
-        panelFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros de búsqueda de tickets", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
+        panelFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros de búsqueda de tickets", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("DESDE");
@@ -100,12 +101,6 @@ public class VerTickets extends javax.swing.JFrame {
             }
         });
 
-        fechaHasta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        fechaHasta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        fechaDesde.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        fechaDesde.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Estado del Ticket");
 
@@ -118,6 +113,10 @@ public class VerTickets extends javax.swing.JFrame {
 
         comboAgencias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        fechaDesde.setDateFormatString("yyyy-MM-dd");
+
+        fechaHasta.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout panelFiltrosLayout = new javax.swing.GroupLayout(panelFiltros);
         panelFiltros.setLayout(panelFiltrosLayout);
         panelFiltrosLayout.setHorizontalGroup(
@@ -127,56 +126,58 @@ public class VerTickets extends javax.swing.JFrame {
                 .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fechaHasta, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                    .addComponent(fechaDesde))
-                .addGap(18, 18, 18)
+                    .addComponent(fechaHasta, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(fechaDesde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(comboAgencias, 0, 160, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(comboAgencias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(comboEstadoTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(241, 241, 241)
                 .addComponent(btnBuscarTicket)
                 .addContainerGap())
         );
         panelFiltrosLayout.setVerticalGroup(
             panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelFiltrosLayout.createSequentialGroup()
-                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFiltrosLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(btnBuscarTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFiltrosLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFiltrosLayout.createSequentialGroup()
+                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelFiltrosLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelFiltrosLayout.createSequentialGroup()
-                                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(fechaHasta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)))
+                                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelFiltrosLayout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(1, 1, 1)
+                                        .addComponent(comboAgencias))
+                                    .addGroup(panelFiltrosLayout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(comboEstadoTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(23, 23, 23))
                             .addGroup(panelFiltrosLayout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(1, 1, 1)
-                                .addComponent(comboAgencias)))
-                        .addGap(17, 17, 17))
+                                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(fechaDesde, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelFiltrosLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(fechaHasta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(panelFiltrosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboEstadoTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(39, 39, 39)
+                        .addComponent(btnBuscarTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         panelResultados.setBackground(new java.awt.Color(255, 255, 255));
-        panelResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados de la Búsqueda", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
+        panelResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados de la Búsqueda", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
 
         panelInfoTicket.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Información del Ticket", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 11), new java.awt.Color(102, 102, 102))); // NOI18N
 
@@ -266,11 +267,11 @@ public class VerTickets extends javax.swing.JFrame {
 
             },
             new String [] {
-                "#", "Agencia", "Ticket", "Fecha", "Monto", "Estado"
+                "#", "Agencia", "Ticket", "Fecha", "Monto", "Premio", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -358,7 +359,7 @@ public class VerTickets extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelResultadosLayout.createSequentialGroup()
                 .addGroup(panelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelResultadosLayout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(panelResultadosLayout.createSequentialGroup()
                         .addContainerGap()
@@ -390,7 +391,7 @@ public class VerTickets extends javax.swing.JFrame {
                     .addGroup(panelResultadosLayout.createSequentialGroup()
                         .addComponent(panelInfoTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -465,11 +466,12 @@ public class VerTickets extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaTicketsMouseClicked
 
     private void btnBuscarTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarTicketActionPerformed
-        String fecha01 = fechaDesde.getText();
-        String fecha02 = fechaHasta.getText();
+        String fecha01 = getFechaDesde();
+        String fecha02 = getFechaHasta();
         modeloTickets.setRowCount(0);
         double totalVendido =0.0;
         double totalAnulado =0.0;
+        
         
          String estado = comboEstadoTicket.getSelectedIndex() == 0
                     ?""
@@ -484,7 +486,13 @@ public class VerTickets extends javax.swing.JFrame {
                     if (ticket.getEstado().toLowerCase().contains(estado)) {
                         allTickets.add(ticket);
                         modeloTickets.addRow(new Object[]{
-                            ticket.getId(),agencia.getNombreAgencia(), ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(), ticket.getEstado()
+                            ticket.getId(),
+                            agencia.getNombreAgencia(),
+                            ticket.getNumTicket(),
+                            ticket.getFecha(),
+                            ticket.getTotalJugado(),
+                            ticket.getTotalPremio(),
+                            ticket.getEstado()
                         });
                     }
                     if (ticket.getEstado().equalsIgnoreCase("anulado")) {
@@ -496,18 +504,22 @@ public class VerTickets extends javax.swing.JFrame {
             }
         } else {//Agencia en especifico
             String nameAgencia = comboAgencias.getSelectedItem().toString();
-            System.out.println("nameAgencia: "+nameAgencia);
             Agencia seleccionado = agencias.stream()
                     .filter(t
                             -> t.getNombreAgencia().equalsIgnoreCase(nameAgencia)
                     ).findFirst().get();
-            System.out.println("Seleccionado: "+seleccionado.toString());
             tickets = (ArrayList) new Ticket().getTicketsByAgencia(seleccionado.getId(), fecha01, fecha02).clone();
 
             for (Ticket ticket : tickets) {
                 if (ticket.getEstado().toLowerCase().contains(estado)) {
                     modeloTickets.addRow(new Object[]{
-                        ticket.getId(),seleccionado.getNombreAgencia(), ticket.getNumTicket(), ticket.getFecha(), ticket.getTotalJugado(), ticket.getEstado()
+                        ticket.getId(),
+                        seleccionado.getNombreAgencia(),
+                        ticket.getNumTicket(),
+                        ticket.getFecha(),
+                        ticket.getTotalJugado(),
+                        ticket.getTotalPremio(),
+                        ticket.getEstado()
                     });
                 }
                 if (ticket.getEstado().equalsIgnoreCase("anulado")) {
@@ -565,8 +577,8 @@ public class VerTickets extends javax.swing.JFrame {
     public javax.swing.JButton btnBuscarTicket;
     private javax.swing.JComboBox<String> comboAgencias;
     private javax.swing.JComboBox<String> comboEstadoTicket;
-    private javax.swing.JTextField fechaDesde;
-    private javax.swing.JTextField fechaHasta;
+    private com.toedter.calendar.JDateChooser fechaDesde;
+    private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
@@ -600,8 +612,8 @@ public class VerTickets extends javax.swing.JFrame {
 
     public void iniciar() {
         this.setExtendedState(MAXIMIZED_BOTH);
-        fechaDesde.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-        fechaHasta.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        fechaDesde.setDate(new Date());
+        fechaHasta.setDate(new Date());
 
         
 
@@ -632,5 +644,12 @@ public class VerTickets extends javax.swing.JFrame {
         for(Agencia agencia:agencias){
             comboAgencias.addItem(agencia.getNombreAgencia());
         }
+    }
+    
+    public String getFechaDesde(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(fechaDesde.getDate());
+    }
+    public String getFechaHasta(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(fechaHasta.getDate());
     }
 }

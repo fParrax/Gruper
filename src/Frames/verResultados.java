@@ -7,7 +7,9 @@ package Frames;
 
 import Clases.ConectarDBCloud;
 import Clases.Resultado;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,10 +38,10 @@ public class verResultados extends javax.swing.JFrame {
         panelResultados = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtFecha = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tabla = new rojerusan.RSTableMetro();
+        txtDesde = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Resultado de Animalitos");
@@ -73,10 +75,6 @@ public class verResultados extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Fecha:");
-
-        txtFecha.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFecha.setText("2022-11-11");
 
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnBuscar.setText("Buscar");
@@ -122,6 +120,8 @@ public class verResultados extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(tabla);
 
+        txtDesde.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
         panelCentralLayout.setHorizontalGroup(
@@ -133,8 +133,8 @@ public class verResultados extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(txtDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelCentralLayout.createSequentialGroup()
                         .addContainerGap()
@@ -147,10 +147,9 @@ public class verResultados extends javax.swing.JFrame {
                 .addComponent(panelResultados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDesde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addContainerGap())
@@ -160,7 +159,7 @@ public class verResultados extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCentral, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
+            .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, 528, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +175,7 @@ public class verResultados extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaKeyPressed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String fechaSeleccionada = txtFecha.getText();
+        String fechaSeleccionada = getFechaDesde();
         modelo.setRowCount(0);
         resultados.clear();
         resultados = (ArrayList) new Resultado().getResultados( fechaSeleccionada, fechaSeleccionada).clone();
@@ -232,13 +231,16 @@ public class verResultados extends javax.swing.JFrame {
     private javax.swing.JPanel panelResultados;
     private javax.swing.ButtonGroup programaRbG;
     private rojerusan.RSTableMetro tabla;
-    public javax.swing.JTextField txtFecha;
+    private com.toedter.calendar.JDateChooser txtDesde;
     // End of variables declaration//GEN-END:variables
 
     private void iniciarDatos() {
         modelo= (DefaultTableModel) tabla.getModel();
         fecha=new ConectarDBCloud().tomarFecha();
-        txtFecha.setText(fecha);
+        txtDesde.setDate(new Date());
         
+    }
+    public String getFechaDesde(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(txtDesde.getDate());
     }
 }

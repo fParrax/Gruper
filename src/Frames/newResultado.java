@@ -36,7 +36,6 @@ public class newResultado extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtFecha = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         comboPrograma = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -44,6 +43,7 @@ public class newResultado extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         comboResultado = new javax.swing.JComboBox<>();
         btnIngresar = new javax.swing.JButton();
+        txtDesde = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ingresar Resultados");
@@ -77,10 +77,6 @@ public class newResultado extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel2.setText("Fecha:");
 
-        txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
-        txtFecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFecha.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel3.setText("Programa:");
 
@@ -105,7 +101,7 @@ public class newResultado extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(286, Short.MAX_VALUE)
                 .addComponent(comboResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(252, 252, 252))
         );
@@ -125,6 +121,8 @@ public class newResultado extends javax.swing.JFrame {
             }
         });
 
+        txtDesde.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
         panelCentralLayout.setHorizontalGroup(
@@ -138,9 +136,9 @@ public class newResultado extends javax.swing.JFrame {
                     .addGroup(panelCentralLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(comboPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,16 +160,16 @@ public class newResultado extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboSorteo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboSorteo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDesde, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -196,7 +194,7 @@ public class newResultado extends javax.swing.JFrame {
         String animal =comboResultado.getSelectedItem().toString();
         
        Resultado resultado = new Resultado(
-               txtFecha.getText(),
+               getFechaDesde(),
                programa,
                sorteo,
                AnimalConvertNameToNumber(animal)+animal
@@ -255,12 +253,12 @@ public class newResultado extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel panelCentral;
-    private javax.swing.JFormattedTextField txtFecha;
+    private com.toedter.calendar.JDateChooser txtDesde;
     // End of variables declaration//GEN-END:variables
 
     private void inciarDatos() {
         String hoy = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        txtFecha.setText(hoy);
+        txtDesde.setDate(new Date());
         llenarAnimales();
         
         
@@ -520,6 +518,8 @@ public class newResultado extends javax.swing.JFrame {
     return animal;
 }
     
-    
+    public String getFechaDesde(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(txtDesde.getDate());
+    }
     
 }

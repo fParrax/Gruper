@@ -28,6 +28,8 @@ public class CupoAnimal {
 
     public CupoAnimal() {
     }
+    
+    
     public CupoAnimal(String programa,String sorteo,String fecha,String animalVendido,double montoVendido){
         this.programa=programa;
         this.sorteo=sorteo;
