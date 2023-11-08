@@ -1,2 +1,5 @@
-/dist/
-/build/
+/dist/*
+/build/*
+nbproject/*
+/build.xml
+/.gitignore
