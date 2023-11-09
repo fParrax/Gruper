@@ -14,14 +14,14 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import rojerusan.RSNotifyFade;
 
-public class viewAgencias extends javax.swing.JPanel {
+public class viewAgencias1 extends javax.swing.JPanel {
 
     DefaultTableModel modelo;
     Agencia seleccionado = new Agencia();
     ArrayList<Agencia> agencias = new ArrayList();
     boolean agregar=false;
 
-    public viewAgencias() {
+    public viewAgencias1() {
         initComponents();
         modelo = (DefaultTableModel) tabla.getModel();
         iniciar();
@@ -134,7 +134,7 @@ public class viewAgencias extends javax.swing.JPanel {
         jLabel4.setText("Estado:");
 
         btnGuardarDatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/disquete.png"))); // NOI18N
-        btnGuardarDatos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardarDatos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnGuardarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarDatosActionPerformed(evt);
@@ -268,7 +268,7 @@ public class viewAgencias extends javax.swing.JPanel {
         );
         pnDetalleLayout.setVerticalGroup(
             pnDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 247, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnDetalleAgenciaLayout = new javax.swing.GroupLayout(pnDetalleAgencia);
@@ -334,16 +334,16 @@ public class viewAgencias extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(lbResultados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                            .addComponent(txtBuscar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnActualizarTabla, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnActualizarTabla))
+                        .addComponent(lbResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addComponent(pnDetalleAgencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -352,13 +352,12 @@ public class viewAgencias extends javax.swing.JPanel {
             .addComponent(pnDetalleAgencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton1)
                 .addGap(5, 5, 5)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnActualizarTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtBuscar))
+                    .addComponent(txtBuscar)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbResultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
@@ -371,7 +370,7 @@ public class viewAgencias extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1032, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -461,17 +460,17 @@ public class viewAgencias extends javax.swing.JPanel {
             
             
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidKeyException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnGuardarDatosActionPerformed
@@ -614,17 +613,17 @@ public class viewAgencias extends javax.swing.JPanel {
             txtContraseña.setText(new EncriptadorAES().desencriptar(seleccionado.getPassword()));
             btnActivarAgencia.setText(seleccionado.getEstado().equalsIgnoreCase("Activo") ? "Desactivar" : "Activar");
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidKeyException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException ex) {
-            Logger.getLogger(viewAgencias1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewAgencias.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

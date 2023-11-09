@@ -153,6 +153,7 @@ public class Agencia {
 
         return lista;
     }
+     
      public ArrayList listarAgenciasByBanquero(int idBanquero) {
         ArrayList<Agencia> lista = new ArrayList();
 
@@ -188,12 +189,11 @@ public class Agencia {
 
         return lista;
     }
-    public int insert(String nameAgenciax, String usernamex, String paswordx ,
+     
+    public boolean insert(String nameAgenciax, String usernamex, String paswordx ,
             String seralPcx, int cupoAnimalx, int comisionx){
-        int rsp =0;
         
         try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
-            con.setCatalog("ag");
             sql = "call `sp.newAgencia` (?,?,?,?,?,?)";
             pst = con.prepareStatement(sql);
             pst.setString(1,nameAgenciax);
@@ -203,14 +203,15 @@ public class Agencia {
             pst.setInt(5,cupoAnimalx);
             pst.setInt(6,comisionx);
             
-            
+            pst.executeUpdate();
+            return true;
         } catch (Exception e) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+            return false;
         } finally {
             cerrar();
         }
-        return rsp;
     }
     
     public boolean cambiarEstado(String estado){

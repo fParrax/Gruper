@@ -27,7 +27,6 @@ private void iniciar(){
     scrollPane.setViewportView(vwBienvenido);
     fechaHoy = new ConectarDBCloud("ag").tomarFecha();
     
-   // vwAgencias = new viewAgencias();
 }
     
     @SuppressWarnings("unchecked")
@@ -39,6 +38,7 @@ private void iniciar(){
         panelSuperior = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
+        miVerAgencias = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         miIngresarResultado = new javax.swing.JMenuItem();
         miVerResultados = new javax.swing.JMenuItem();
@@ -81,6 +81,15 @@ private void iniciar(){
         );
 
         jMenu3.setText("Agencias");
+
+        miVerAgencias.setText("Ver Agencias");
+        miVerAgencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVerAgenciasActionPerformed(evt);
+            }
+        });
+        jMenu3.add(miVerAgencias);
+
         jMenuBar1.add(jMenu3);
 
         jMenu1.setText("Resultados");
@@ -159,6 +168,14 @@ private void iniciar(){
        new verResultados().setVisible(true);
     }//GEN-LAST:event_miVerResultadosActionPerformed
 
+    private void miVerAgenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerAgenciasActionPerformed
+      if(vwAgencias == null){
+           vwAgencias = new viewAgencias();
+       }
+        
+        scrollPane.setViewportView(vwAgencias);
+    }//GEN-LAST:event_miVerAgenciasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -201,6 +218,7 @@ private void iniciar(){
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem miIngresarResultado;
+    private javax.swing.JMenuItem miVerAgencias;
     private javax.swing.JMenuItem miVerResultados;
     private javax.swing.JMenuItem mitemVerTickets;
     private javax.swing.JMenuItem mitemVerVentas;
