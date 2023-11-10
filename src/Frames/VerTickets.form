@@ -73,7 +73,7 @@
                       <Component id="fechaHasta" pref="156" max="32767" attributes="0"/>
                       <Component id="fechaDesde" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="55" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="comboAgencias" max="32767" attributes="0"/>
                       <Component id="jLabel4" min="-2" pref="160" max="-2" attributes="0"/>
@@ -83,7 +83,7 @@
                       <Component id="comboEstadoTicket" alignment="0" min="-2" pref="137" max="-2" attributes="0"/>
                       <Component id="jLabel7" alignment="0" min="-2" pref="137" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="241" max="-2" attributes="0"/>
+                  <EmptySpace pref="241" max="32767" attributes="0"/>
                   <Component id="btnBuscarTicket" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
