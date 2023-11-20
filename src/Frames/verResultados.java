@@ -180,9 +180,13 @@ public class verResultados extends javax.swing.JFrame {
         resultados.clear();
         resultados = (ArrayList) new Resultado().getResultados( fechaSeleccionada, fechaSeleccionada).clone();
         for(Resultado resultado:resultados){
-            modelo.addRow(new Object[]{
-            resultado.getSorteo(),resultado.getAnimal()
-            });
+           if(resultado.getEstado().equalsIgnoreCase("activo")){
+                modelo.addRow(new Object[]{
+                    resultado.getSorteo(),
+                    resultado.getAnimal()
+                });
+           }
+            
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
