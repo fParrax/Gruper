@@ -20,6 +20,7 @@ public class Agencia {
     double comision;
     
     ArrayList<Ticket> tickets = new ArrayList();
+    ArrayList<CupoAgencia> cupos = new ArrayList();
     String sql;
     PreparedStatement pst;
     ResultSet rs;
@@ -103,11 +104,42 @@ public class Agencia {
             con.setCatalog("ag");
            
             pst = con.prepareCall(sql);
-            
             rs = pst.executeQuery();
+            Agencia temp = new Agencia();
             while (rs.next()) {
-                    lista.add( new Agencia(rs.getInt("id"),rs.getInt("numTicket"),rs.getInt("cupoAnimal"),rs.getString("serialPc"),rs.getString("nombreAgencia"),
-                            rs.getString("username"),rs.getString("pasword"),rs.getString("estado"),rs.getDouble("comision")));
+                   temp = new Agencia(
+                            rs.getInt("id"),
+                            rs.getInt("numTicket"),
+                            rs.getInt("cupoAnimal"),
+                            rs.getString("serialPc"),
+                            rs.getString("nombreAgencia"),
+                            rs.getString("username"),
+                            rs.getString("pasword"),
+                            rs.getString("estado"),
+                            rs.getDouble("comision")
+                    );
+                    CupoAgencia cupo = new CupoAgencia(
+                        rs.getInt("idCupo"),
+                        rs.getInt("idAgencia"),
+                        rs.getString("tipoCupo"),
+                        rs.getString("programas"),
+                        rs.getString("sorteos"),
+                        rs.getString("animales"),
+                        rs.getDouble("monto"),
+                        rs.getString("fechaInicio"),
+                        rs.getString("fechaFin"),
+                        rs.getString("estadoCUpo")
+                    );
+                   
+                   if(!lista.contains(temp)){
+                       temp.addCupo(cupo);
+                       lista.add(temp);
+                   }else{
+                       int index = lista.indexOf(temp);
+                       if(!lista.get(index).getCupos().contains(cupo)){
+                           lista.get(index).addCupo(cupo);
+                       }
+                   }
             }
         } catch (Exception e) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
@@ -251,6 +283,23 @@ public class Agencia {
             cerrar();
         }
     }
+    public boolean updateCupoPermanente(double cupo){
+        try (java.sql.Connection con = new ConectarDBCloud("ag").getCon()) {
+            sql = "call `sp.UpdateCupoPermanente` (?,?)";
+            pst = con.prepareStatement(sql);
+            pst.setDouble(1,cupo);
+            pst.setInt(2,this.id);
+            return pst.executeUpdate()>0?true:false;
+            
+            
+        } catch (Exception e) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error con el manejo de base de datos, contacte con el adm.\n" + e);
+            return false;
+        } finally {
+            cerrar();
+        }
+    }
     
     public boolean update(){
         int rsp =0;
@@ -291,10 +340,17 @@ public class Agencia {
         }
     }
 
-   
-
      public void incrementarTicket(){
          numTicket++;
+     }
+     
+     
+     public void addCupo(CupoAgencia cupo){
+         cupos.add(cupo);
+     }
+     
+     public ArrayList<CupoAgencia> getCupos(){
+         return cupos;
      }
 
     @Override
