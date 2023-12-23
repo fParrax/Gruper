@@ -613,9 +613,6 @@ public class AgregarCupo extends javax.swing.JFrame {
           String fechaDesde = getFechaDesde();
           String fechaHasta = getFechaHasta();
           
-          System.out.println("programaSeleccionado: "+programaSeleccionado);
-          System.out.println("animalesSeleccionado: "+animalesSeleccionado);
-          System.out.println("sorteosSeleccionados: "+sorteosSeleccionados);
           
           
           for(JCheckBox agenc : agencias){
@@ -626,7 +623,7 @@ public class AgregarCupo extends javax.swing.JFrame {
                         "Especifico",
                         monto, 
                         fechaDesde,
-                        fechaDesde,
+                        fechaHasta,
                         programaSeleccionado,
                         sorteosSeleccionados,
                         animalesSeleccionado
@@ -665,7 +662,7 @@ public class AgregarCupo extends javax.swing.JFrame {
               animalesSeleccionado="";
               for(JCheckBox animal : animales){
                   if(animal.isSelected())
-                  animalesSeleccionado+=animal.getText()+",";
+                  animalesSeleccionado+=animal.getName()+",";
               }animalesSeleccionado = animalesSeleccionado.substring(0, animalesSeleccionado.length()-1);
           }
           return animalesSeleccionado;
