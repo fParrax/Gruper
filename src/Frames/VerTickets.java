@@ -447,7 +447,7 @@ public class VerTickets extends javax.swing.JFrame {
                     ).findFirst().get();
               }
               
-             
+             //
 
             lbNumticket.setText(ticketSeleccionado.getId() + "");
             lbFecha.setText(ticketSeleccionado.getFecha());
