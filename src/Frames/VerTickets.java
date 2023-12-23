@@ -313,11 +313,11 @@ public class VerTickets extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sorteo", "Jugada", "Monto", "Estado"
+                "Sorteo", "Jugada", "Monto", "Premio", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -457,7 +457,11 @@ public class VerTickets extends javax.swing.JFrame {
             lbTotalPagado.setText(ticketSeleccionado.getMontoPagado() + "");
             for (JugadasTicket jugada : ticketSeleccionado.getJugadas()) {
                 modeloJugadas.addRow(new Object[]{
-                    jugada.getSorteo(), jugada.getAnimal(), jugada.getMonto(),jugada.getEstado()
+                    jugada.getSorteo(),
+                    jugada.getAnimal(),
+                    jugada.getMonto(),
+                    jugada.getEstado().equalsIgnoreCase("premiado")||jugada.getEstado().equalsIgnoreCase("pagado")?(jugada.getMonto()*30):0,
+                    jugada.getEstado()
                 });
             }
 

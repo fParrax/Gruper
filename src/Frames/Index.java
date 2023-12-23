@@ -5,7 +5,6 @@
 package Frames;
 
 import Clases.ConectarDBCloud;
-import Panels.viewAgencias;
 import Panels.viewBienvenido;
 
 /**
@@ -15,7 +14,7 @@ import Panels.viewBienvenido;
 public class Index extends javax.swing.JFrame {
 
     public static String fechaHoy="2023-10-31";
-    viewAgencias vwAgencias;
+    VerAgencias verAgencias;
     viewBienvenido vwBienvenido;
     public Index() {
         initComponents();
@@ -169,11 +168,11 @@ private void iniciar(){
     }//GEN-LAST:event_miVerResultadosActionPerformed
 
     private void miVerAgenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerAgenciasActionPerformed
-      if(vwAgencias == null){
-           vwAgencias = new viewAgencias();
+      if(verAgencias == null){
+           verAgencias = new VerAgencias();
        }
         
-        scrollPane.setViewportView(vwAgencias);
+       verAgencias.setVisible(true);
     }//GEN-LAST:event_miVerAgenciasActionPerformed
 
     /**
