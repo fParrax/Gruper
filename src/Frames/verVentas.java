@@ -8,10 +8,13 @@ package Frames;
 import Clases.Agencia;
 import Clases.Ticket;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -98,11 +101,11 @@ public class verVentas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Agencia", "Ventas", "Comision", "Premios", "Saldo"
+                "Agencia", "Ventas", "Comision", "Premios", "Saldo", "30% Saldo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -161,7 +164,7 @@ public class verVentas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -196,14 +199,15 @@ public class verVentas extends javax.swing.JFrame {
                             .addComponent(comboAgencias, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDesde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtHasta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtDesde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtHasta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                 .addContainerGap())
@@ -217,7 +221,7 @@ public class verVentas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -231,53 +235,87 @@ public class verVentas extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
        
        
-        double vendido =0,premios =0, comision=0,saldo=0;
-        String fecha01 = getFechaDesde(),fecha02 = getFechaHasta();
-         modelo.setRowCount(0);
-         
-        if(comboAgencias.getSelectedIndex() == 0){
-          agencias = (ArrayList) new Ticket().getTicketsByBanquero(1,fecha01, fecha02).clone();
-          
-          for(Agencia agencia:agencias){
-              comision=0.0;
-              saldo =0.0;
-              vendido=0.0;
-              premios =0.0;
-              System.out.println("Agencia: "+agencia.getNombreAgencia()+" Ticket: "+agencia.getTickets().size());
-            for (Ticket ticket : agencia.getTickets()) {
-                if (!ticket.getEstado().equalsIgnoreCase("anulado")) {
-                    vendido += ticket.getTotalJugado();
-                    premios += ticket.getTotalPremio();
+        double vendido = 0, premios = 0, comision = 0, saldo = 0;
+        String fecha01 = getFechaDesde(), fecha02 = getFechaHasta();
+        modelo.setRowCount(0);
+
+         double TotalVendido = 0;
+            double TotalComisiom = 0;
+            double TotalSaldo = 0;
+            double TotalPremios=0;
+            double Total30Porciento = 0;
+        if (comboAgencias.getSelectedIndex() == 0) {
+            agencias = (ArrayList) new Ticket().getTicketsByBanquero(1, fecha01, fecha02).clone();
+
+            
+           
+            for (Agencia agencia : agencias) {
+                comision = 0.0;
+                saldo = 0.0;
+                vendido = 0.0;
+                premios = 0.0;
+                System.out.println("Agencia: " + agencia.getNombreAgencia() + " Ticket: " + agencia.getTickets().size());
+                for (Ticket ticket : agencia.getTickets()) {
+                    if (!ticket.getEstado().equalsIgnoreCase("anulado")) {
+                        vendido += ticket.getTotalJugado();
+                        premios += ticket.getTotalPremio();
+                    }
                 }
+                comision = (vendido * (agencia.getComision() / 100));
+                String comi = new DecimalFormat("#.##").format(comision);
+                saldo = vendido - (comision + premios);
+                String sal = new DecimalFormat("#.##").format(saldo);
+                 double porcentajeAl30 = saldo * 0.30;
+            String porcentajeAl30Decimales = new DecimalFormat("#.##").format(porcentajeAl30);
+                modelo.addRow(new Object[]{agencia.getNombreAgencia(), vendido, comi, premios, sal,porcentajeAl30Decimales});
+                 
+                TotalVendido+=vendido;
+                 TotalComisiom+=comision;
+                 TotalPremios+=premios;
+                TotalSaldo+=saldo;
+                 Total30Porciento+=porcentajeAl30;
+                
+                 
             }
-            comision= (vendido*(agencia.getComision()/100));
-            String comi = new DecimalFormat("#.##").format(comision);
-            saldo= vendido -(comision+premios);
-            String sal = new DecimalFormat("#.##").format(saldo);
-            modelo.addRow(new Object[]{agencia.getNombreAgencia(),vendido,comi,premios,sal});
-        }
-        }else{
+            
+            
+        } else {
+            
             Agencia seleccionada = agencias.stream()
-                            .filter(t-> 
-                                    t.getNombreAgencia().equalsIgnoreCase(comboAgencias.getSelectedItem().toString()))
-                    .findFirst().get();
-            
+                    .filter(t -> t.getNombreAgencia().equalsIgnoreCase(comboAgencias.getSelectedItem().toString())
+                    ).findFirst().get();
+
             tickets = (ArrayList) new Ticket().getTicketsByAgencia(seleccionada.getId(), fecha01, fecha02).clone();
-            
-            
+
             for (Ticket ticket : tickets) {
                 if (!ticket.getEstado().equalsIgnoreCase("anulado")) {
                     vendido += ticket.getTotalJugado();
                     premios += ticket.getTotalPremio();
                 }
             }
-            comision= (vendido*(seleccionada.getComision()/100));
+            comision = (vendido * (seleccionada.getComision() / 100));
             String comi = new DecimalFormat("#.##").format(comision);
-            saldo= vendido -(comision+premios);
-            String sal = new DecimalFormat("#.##").format(saldo);
-            modelo.addRow(new Object[]{seleccionada.getNombreAgencia(),vendido,comi,premios,sal});
+            saldo = vendido - (comision + premios);
             
+            String saldo2Decimales = new DecimalFormat("#.##").format(saldo);
+            double porcentajeAl30 = saldo * 0.30;
+            String porcentajeAl30Decimales = new DecimalFormat("#.##").format(porcentajeAl30);
+            modelo.addRow(new Object[]{seleccionada.getNombreAgencia(), vendido, comi, premios, saldo2Decimales,porcentajeAl30Decimales});
+
+             TotalVendido+=vendido;
+                 TotalComisiom+=comision;
+                  TotalPremios+=premios;
+                TotalSaldo+=saldo;
+                 Total30Porciento+=porcentajeAl30;
         }
+        modelo.addRow(new Object[]{
+                 "Total ",
+                 new DecimalFormat("#.##").format(TotalVendido),
+                 new DecimalFormat("#.##").format(TotalComisiom),
+                 new DecimalFormat("#.##").format(TotalPremios),
+                 new DecimalFormat("#.##").format(TotalSaldo),
+                 new DecimalFormat("#.##").format(Total30Porciento)
+             });
         
     }//GEN-LAST:event_btnBuscarActionPerformed
 

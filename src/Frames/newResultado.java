@@ -81,13 +81,18 @@ public class newResultado extends javax.swing.JFrame {
         jLabel3.setText("Programa:");
 
         comboPrograma.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        comboPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LottoActivo", "Granjita" }));
+        comboPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LottoActivo", "Granjita", "LottoRD", "LottoInternacional" }));
+        comboPrograma.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboProgramaItemStateChanged(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel4.setText("Sorteo");
 
         comboSorteo.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        comboSorteo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM" }));
+        comboSorteo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:30 PM" }));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultado", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
 
@@ -122,6 +127,7 @@ public class newResultado extends javax.swing.JFrame {
         });
 
         txtDesde.setDateFormatString("yyyy-MM-dd");
+        txtDesde.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
 
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
@@ -158,13 +164,14 @@ public class newResultado extends javax.swing.JFrame {
             .addGroup(panelCentralLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboSorteo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDesde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboSorteo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -204,6 +211,10 @@ public class newResultado extends javax.swing.JFrame {
                    JOptionPane.showMessageDialog(rootPane, "Resultado Ingresado correctamente" );
                }
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void comboProgramaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboProgramaItemStateChanged
+        
+    }//GEN-LAST:event_comboProgramaItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -277,7 +288,7 @@ public class newResultado extends javax.swing.JFrame {
         if (true) {
             switch (numero) {
                 case 0:
-                    animal = "Delfin";
+                    animal = "Delfín";
                     break;
                 case -1:
                     animal = "Ballena";
@@ -295,7 +306,7 @@ public class newResultado extends javax.swing.JFrame {
                     animal = "Alacrán";
                     break;
                 case 5:
-                    animal = "Leon";
+                    animal = "León";
                     break;
                 case 6:
                     animal = "Rana";
@@ -307,7 +318,7 @@ public class newResultado extends javax.swing.JFrame {
                     animal = "Ratón";
                     break;
                 case 9:
-                    animal = "Aguila";
+                    animal = "Águila";
                     break;
                 case 10:
                     animal = "Tigre";
@@ -399,11 +410,11 @@ public class newResultado extends javax.swing.JFrame {
     String animal = "";
 
     switch (nombreAnimal) {
-        case "Delfin":
+        case "Delfín":
             animal = "0";
             break;
         case "Ballena":
-            animal = "-1";
+            animal = "00";
             break;
         case "Carnero":
             animal = "1";
@@ -417,7 +428,7 @@ public class newResultado extends javax.swing.JFrame {
         case "Alacrán":
             animal = "4";
             break;
-        case "Leon":
+        case "León":
             animal = "5";
             break;
         case "Rana":
@@ -429,7 +440,7 @@ public class newResultado extends javax.swing.JFrame {
         case "Ratón":
             animal = "8";
             break;
-        case "Aguila":
+        case "Águila":
             animal = "9";
             break;
         case "Tigre":

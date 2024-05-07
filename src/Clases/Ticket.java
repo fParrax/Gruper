@@ -94,15 +94,17 @@ public class Ticket {
             while (rs.next()) {
                 
                 Agencia agenciaTemp = new Agencia(
-                        rs.getInt("myIdAgencia"),
-                        rs.getInt("myNumTicket"),
-                        rs.getInt("cupoAnimal"),
-                        rs.getString("serialPc"),
-                        rs.getString("nombreAgencia"),
+                        rs.getInt("id"),
+                            rs.getInt("numTicketx"),
+                            rs.getInt("minutos_cierre"),
+                            rs.getInt("jugadaMinima"),
+                            rs.getInt("cupoAnimal"),
+                            rs.getString("serialPc"),
+                            rs.getString("nombreAgencia"),
                             rs.getString("username"),
-                        rs.getString("pasword"),
-                        rs.getString("myEstado"),
-                        rs.getDouble("comision")
+                            rs.getString("pasword"),
+                            rs.getString("estado"),
+                            rs.getDouble("comision")
                 );
                 
                 Ticket ticketTemp = new Ticket(

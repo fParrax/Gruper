@@ -3,6 +3,10 @@ package Frames;
 
 import Clases.Agencia;
 import Clases.CupoAgencia;
+import Clases.CupoAnimal;
+import Clases.HoraSorteo;
+import Clases.JCheckBoxPrograma;
+import Clases.Loteria;
 import Clases.ScrollSens;
 import Clases.tools;
 import java.awt.Font;
@@ -10,24 +14,33 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.plaf.basic.BasicSliderUI;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author Cletox
  */
 public class AgregarCupo extends javax.swing.JFrame {
-
+    JPanel panelCheckAnimales = new JPanel();
+    JPanel panelCheckSorteos = new JPanel();
    ArrayList<JCheckBox> programas = new ArrayList();
-   ArrayList<JCheckBox> sorteos = new ArrayList();
+   ArrayList<JCheckBoxPrograma> sorteos = new ArrayList();
+   ArrayList<Loteria> loterias = new ArrayList();
    ArrayList<JCheckBox> agencias = new ArrayList();
    ArrayList<JCheckBox> animales = new ArrayList();
    ArrayList<Agencia> myAgencias = new ArrayList();
    Font segoui = new Font("Segoe UI",Font.PLAIN,15);
+   ArrayList<CupoAnimal> myCupos = new ArrayList();
    
     public AgregarCupo() {
         initComponents();
@@ -56,23 +69,12 @@ public class AgregarCupo extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         panelAnimales = new javax.swing.JPanel();
         cbAnimalesTodos = new javax.swing.JCheckBox();
-        scrollAnimales = new javax.swing.JScrollPane();
-        panelProgramas = new javax.swing.JPanel();
-        cbProgramaTodos = new javax.swing.JCheckBox();
+        txtBusqueda = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
         panelSorteos = new javax.swing.JPanel();
         cbSorteoTodos = new javax.swing.JCheckBox();
-        c8am = new javax.swing.JCheckBox();
-        c9am = new javax.swing.JCheckBox();
-        c10am = new javax.swing.JCheckBox();
-        c11am = new javax.swing.JCheckBox();
-        c12pm = new javax.swing.JCheckBox();
-        c1pm = new javax.swing.JCheckBox();
-        c2pm = new javax.swing.JCheckBox();
-        c3pm = new javax.swing.JCheckBox();
-        c4pm = new javax.swing.JCheckBox();
-        c5pm = new javax.swing.JCheckBox();
-        c6pm = new javax.swing.JCheckBox();
-        c7pm = new javax.swing.JCheckBox();
+        txtBusquedaSorteos = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
         panelMonto = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtMonto = new javax.swing.JTextField();
@@ -81,6 +83,8 @@ public class AgregarCupo extends javax.swing.JFrame {
         fechaDesde = new com.toedter.calendar.JDateChooser();
         fechaHasta = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
+        scrollAnimales = new javax.swing.JScrollPane();
+        scrollSorteos = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -102,7 +106,7 @@ public class AgregarCupo extends javax.swing.JFrame {
             panelAgenciasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAgenciasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cbAgTodos, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(cbAgTodos, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelAgenciasLayout.setVerticalGroup(
@@ -141,56 +145,50 @@ public class AgregarCupo extends javax.swing.JFrame {
             }
         });
 
+        txtBusqueda.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        txtBusqueda.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBusquedaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBusquedaKeyTyped(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/add-button.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelAnimalesLayout = new javax.swing.GroupLayout(panelAnimales);
         panelAnimales.setLayout(panelAnimalesLayout);
         panelAnimalesLayout.setHorizontalGroup(
             panelAnimalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAnimalesLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addGroup(panelAnimalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbAnimalesTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrollAnimales))
+                    .addComponent(cbAnimalesTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelAnimalesLayout.createSequentialGroup()
+                        .addComponent(txtBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelAnimalesLayout.setVerticalGroup(
             panelAnimalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAnimalesLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(cbAnimalesTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollAnimales, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        cbProgramaTodos.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        cbProgramaTodos.setText("Todos los Programas");
-        cbProgramaTodos.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        cbProgramaTodos.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbProgramaTodosItemStateChanged(evt);
-            }
-        });
-        cbProgramaTodos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbProgramaTodosActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelProgramasLayout = new javax.swing.GroupLayout(panelProgramas);
-        panelProgramas.setLayout(panelProgramasLayout);
-        panelProgramasLayout.setHorizontalGroup(
-            panelProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelProgramasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cbProgramaTodos, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        panelProgramasLayout.setVerticalGroup(
-            panelProgramasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelProgramasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cbProgramaTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addGroup(panelAnimalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAnimalesLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         cbSorteoTodos.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
@@ -202,123 +200,18 @@ public class AgregarCupo extends javax.swing.JFrame {
             }
         });
 
-        c8am.setBackground(new java.awt.Color(255, 255, 255));
-        c8am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c8am.setLabel("8 AM");
-        c8am.setName(" 8 AM"); // NOI18N
-        c8am.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c8amActionPerformed(evt);
+        txtBusquedaSorteos.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        txtBusquedaSorteos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtBusquedaSorteos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBusquedaSorteosKeyReleased(evt);
             }
         });
 
-        c9am.setBackground(new java.awt.Color(255, 255, 255));
-        c9am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c9am.setText(" 9 AM");
-        c9am.setName("9 AM"); // NOI18N
-        c9am.addActionListener(new java.awt.event.ActionListener() {
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/add-button.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c9amActionPerformed(evt);
-            }
-        });
-
-        c10am.setBackground(new java.awt.Color(255, 255, 255));
-        c10am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c10am.setText(" 10 AM");
-        c10am.setName("10 AM"); // NOI18N
-        c10am.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c10amActionPerformed(evt);
-            }
-        });
-
-        c11am.setBackground(new java.awt.Color(255, 255, 255));
-        c11am.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c11am.setText(" 11 AM");
-        c11am.setName("11 AM"); // NOI18N
-        c11am.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c11amActionPerformed(evt);
-            }
-        });
-
-        c12pm.setBackground(new java.awt.Color(255, 255, 255));
-        c12pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c12pm.setText(" 12 PM");
-        c12pm.setName("12 PM"); // NOI18N
-        c12pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c12pmActionPerformed(evt);
-            }
-        });
-
-        c1pm.setBackground(new java.awt.Color(255, 255, 255));
-        c1pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c1pm.setText(" 1 PM");
-        c1pm.setName("1 PM"); // NOI18N
-        c1pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c1pmActionPerformed(evt);
-            }
-        });
-
-        c2pm.setBackground(new java.awt.Color(255, 255, 255));
-        c2pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c2pm.setText(" 2 PM");
-        c2pm.setName("2 PM"); // NOI18N
-        c2pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c2pmActionPerformed(evt);
-            }
-        });
-
-        c3pm.setBackground(new java.awt.Color(255, 255, 255));
-        c3pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c3pm.setText(" 3 PM");
-        c3pm.setName("3 PM"); // NOI18N
-        c3pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c3pmActionPerformed(evt);
-            }
-        });
-
-        c4pm.setBackground(new java.awt.Color(255, 255, 255));
-        c4pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c4pm.setText(" 4 PM");
-        c4pm.setName("4 PM"); // NOI18N
-        c4pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c4pmActionPerformed(evt);
-            }
-        });
-
-        c5pm.setBackground(new java.awt.Color(255, 255, 255));
-        c5pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c5pm.setText(" 5 PM");
-        c5pm.setName("5 PM"); // NOI18N
-        c5pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c5pmActionPerformed(evt);
-            }
-        });
-
-        c6pm.setBackground(new java.awt.Color(255, 255, 255));
-        c6pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c6pm.setText(" 6 PM");
-        c6pm.setName("6 PM"); // NOI18N
-        c6pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c6pmActionPerformed(evt);
-            }
-        });
-
-        c7pm.setBackground(new java.awt.Color(255, 255, 255));
-        c7pm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        c7pm.setText(" 7 PM");
-        c7pm.setName("7 PM"); // NOI18N
-        c7pm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c7pmActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -329,54 +222,23 @@ public class AgregarCupo extends javax.swing.JFrame {
             .addGroup(panelSorteosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbSorteoTodos, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                    .addComponent(cbSorteoTodos, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
                     .addGroup(panelSorteosLayout.createSequentialGroup()
-                        .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(c8am, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c9am, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c10am, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                            .addComponent(c11am, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c12pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c1pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c2pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c3pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c4pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c5pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c6pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(c7pm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(txtBusquedaSorteos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3)))
                 .addContainerGap())
         );
         panelSorteosLayout.setVerticalGroup(
             panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSorteosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cbSorteoTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbSorteoTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c8am)
-                .addGap(8, 8, 8)
-                .addComponent(c9am, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c10am)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c11am, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c12pm, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c1pm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c2pm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c3pm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c4pm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c5pm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c6pm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c7pm)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panelSorteosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtBusquedaSorteos)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(11, 11, 11))
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
@@ -446,13 +308,13 @@ public class AgregarCupo extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(16, 16, 16)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(158, 158, 158))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
@@ -465,9 +327,11 @@ public class AgregarCupo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelAnimales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelProgramas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(scrollAnimales))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollSorteos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -478,13 +342,16 @@ public class AgregarCupo extends javax.swing.JFrame {
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCentralLayout.createSequentialGroup()
-                        .addComponent(panelProgramas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelAnimales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(panelAgencias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelCentralLayout.createSequentialGroup()
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(panelSorteos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelAnimales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollAnimales)
+                            .addComponent(scrollSorteos))))
                 .addContainerGap())
         );
 
@@ -503,88 +370,26 @@ public class AgregarCupo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbProgramaTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProgramaTodosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbProgramaTodosActionPerformed
-
-    private void cbProgramaTodosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbProgramaTodosItemStateChanged
-       if(cbProgramaTodos.isSelected()){
-           for(JCheckBox programa : programas){
-               programa.setSelected(true);
-           }
-       }
-    }//GEN-LAST:event_cbProgramaTodosItemStateChanged
-
     private void cbAgTodosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbAgTodosItemStateChanged
-      if(cbAgTodos.isSelected()){
-           for(JCheckBox agencia : agencias){
-               agencia.setSelected(true);
-           }
-       }
+     
+        agencias.stream().forEach(t->{
+            t.setSelected(cbAgTodos.isSelected());
+        });
+        
     }//GEN-LAST:event_cbAgTodosItemStateChanged
 
-    private void c8amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c8amActionPerformed
-       
-    }//GEN-LAST:event_c8amActionPerformed
-
-    private void c9amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c9amActionPerformed
-        
-    }//GEN-LAST:event_c9amActionPerformed
-
-    private void c10amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c10amActionPerformed
-       
-    }//GEN-LAST:event_c10amActionPerformed
-
-    private void c11amActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c11amActionPerformed
-        
-    }//GEN-LAST:event_c11amActionPerformed
-
-    private void c12pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c12pmActionPerformed
-       
-    }//GEN-LAST:event_c12pmActionPerformed
-
-    private void c1pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c1pmActionPerformed
-       
-    }//GEN-LAST:event_c1pmActionPerformed
-
-    private void c2pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c2pmActionPerformed
-        
-    }//GEN-LAST:event_c2pmActionPerformed
-
-    private void c3pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c3pmActionPerformed
-       
-    }//GEN-LAST:event_c3pmActionPerformed
-
-    private void c4pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c4pmActionPerformed
-       
-    }//GEN-LAST:event_c4pmActionPerformed
-
-    private void c5pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c5pmActionPerformed
-        
-    }//GEN-LAST:event_c5pmActionPerformed
-
-    private void c6pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c6pmActionPerformed
-       
-    }//GEN-LAST:event_c6pmActionPerformed
-
-    private void c7pmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c7pmActionPerformed
-        
-    }//GEN-LAST:event_c7pmActionPerformed
-
     private void cbSorteoTodosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbSorteoTodosItemStateChanged
-      if(cbSorteoTodos.isSelected()){
-           for(JCheckBox sorteo : sorteos){
-               sorteo.setSelected(true);
-           }
-       }
+      sorteos.stream()
+        .forEach(t->{
+            t.setSelected(cbSorteoTodos.isSelected());
+        });
     }//GEN-LAST:event_cbSorteoTodosItemStateChanged
 
     private void cbAnimalesTodosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbAnimalesTodosItemStateChanged
-      if(cbAnimalesTodos.isSelected()){
-           for(JCheckBox animal : animales){
-               animal.setSelected(true);
-           }
-       }
+      animales.stream()
+        .forEach(t->{
+            t.setSelected(cbAnimalesTodos.isSelected());
+        });
      
     }//GEN-LAST:event_cbAnimalesTodosItemStateChanged
 
@@ -607,32 +412,208 @@ public class AgregarCupo extends javax.swing.JFrame {
                   + "Si no cumple con eso no podrá continuar");
       }else{
           double monto = Double.parseDouble(txtMonto.getText());
-          String programaSeleccionado = getProgramasSeleccionadas();
+          String programaSeleccionado = "-";//getProgramasSeleccionadas();
           String animalesSeleccionado = getAnimalesSeleccionadas();
           String sorteosSeleccionados = getSorteosSeleccionadas();
-          String fechaDesde = getFechaDesde();
-          String fechaHasta = getFechaHasta();
+          
+          String fechaDesdex = getFechaDesde();
+          String fechaHastax = getFechaHasta();
           
           
+           myCupos =  (ArrayList) new CupoAnimal().getCupoAgenciaByRangoFecha(fechaDesdex, fechaHastax);
+       
+           
           
-          for(JCheckBox agenc : agencias){
-            if(agenc.isSelected()){
+          for(JCheckBox agenc : agencias.stream().filter(t->t.isSelected()).collect(Collectors.toList())){
                 int idAgencia = Integer.parseInt(agenc.getName());
                 new CupoAgencia().insertCupo(
                         idAgencia,
                         "Especifico",
                         monto, 
-                        fechaDesde,
-                        fechaHasta,
+                        fechaDesdex,
+                        fechaHastax,
                         programaSeleccionado,
                         sorteosSeleccionados,
                         animalesSeleccionado
                 );
-            }
           }
+          
+          
+          
+          while(fechaDesde.getDate().compareTo(fechaHasta.getDate()) <= 0){
+              JSONArray x = procesarVendidos(getFechaDesde());
+              
+              new CupoAnimal().actualizarCupo(
+                      x
+              );
+              fechaDesde.setDate(new tools().sumarDiasFechaDate(fechaDesde.getDate(), 1));
+          }
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
           JOptionPane.showMessageDialog(panelMonto, "Información agregada con éxito");
       }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyTyped
+       
+    }//GEN-LAST:event_txtBusquedaKeyTyped
+private JSONArray procesarVendidos(String fecha){
+        JSONArray jsonCupos = new JSONArray();
+        
+        agencias.stream()
+            .filter(t->
+                t.isSelected()
+            ).forEach(ag->{
+                int idAgencia= Integer.parseInt(ag.getName());
+                sorteos.stream()
+                .filter(t->t.isSelected())
+                .forEach(sorteo->{
+                    String separador = Pattern.quote(" ");
+                    String[] valores = sorteo.getText().split(separador);
+                    String programa = valores[0];
+                    String mySorteo = valores[1]+" "+valores[2];
+
+                    myCupos.stream().filter(t->
+                            t.getPrograma().equalsIgnoreCase(programa) &&
+                            t.getSorteo().equalsIgnoreCase(mySorteo) &&
+                            t.getFecha().equalsIgnoreCase(fecha) &&
+                            Float.compare(t.getIdAgencia(),idAgencia) == 0
+                    ).forEach(cupo -> {
+                        JSONObject vendido = new JSONObject();
+                        double monto = Double.parseDouble(txtMonto.getText());
+                        vendido = new JSONObject();
+                        vendido.put("p_idx", cupo.getId());
+                         for(JCheckBox anm :  animales.stream().filter(anm->anm.isSelected()).collect(Collectors.toList())){
+                            cupo = cupo.setVendido(anm.getName(), monto);  
+                        }
+                        
+                        vendido.put("p_animal_0", cupo.getAnimal_0() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_0() );
+                        vendido.put("p_animal_00", cupo.getAnimal_00() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_00() );
+                        vendido.put("p_animal_1", cupo.getAnimal_1() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_1() );
+                        vendido.put("p_animal_2", cupo.getAnimal_2() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_2() );
+                        vendido.put("p_animal_3", cupo.getAnimal_3() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_3() );
+                        vendido.put("p_animal_4", cupo.getAnimal_4() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_4() );
+                        vendido.put("p_animal_5", cupo.getAnimal_5() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_5() );
+                        vendido.put("p_animal_6", cupo.getAnimal_6() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_6() );
+                        vendido.put("p_animal_7", cupo.getAnimal_7() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_7() );
+                        vendido.put("p_animal_8", cupo.getAnimal_8() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_8() );
+                        vendido.put("p_animal_9", cupo.getAnimal_9() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_9() );
+                        vendido.put("p_animal_10", cupo.getAnimal_10() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_10() );
+                        vendido.put("p_animal_11", cupo.getAnimal_11() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_11() );
+                        vendido.put("p_animal_12", cupo.getAnimal_12() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_12() );
+                        vendido.put("p_animal_13", cupo.getAnimal_13() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_13() );
+                        vendido.put("p_animal_14", cupo.getAnimal_14() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_14() );
+                        vendido.put("p_animal_15", cupo.getAnimal_15() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_15() );
+                        vendido.put("p_animal_16", cupo.getAnimal_16() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_16() );
+                        vendido.put("p_animal_17", cupo.getAnimal_17() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_17() );
+                        vendido.put("p_animal_18", cupo.getAnimal_18() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_18() );
+                        vendido.put("p_animal_19", cupo.getAnimal_19() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_19() );
+                        vendido.put("p_animal_20", cupo.getAnimal_20() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_20() );
+                        vendido.put("p_animal_21", cupo.getAnimal_21() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_21() );
+                        vendido.put("p_animal_22", cupo.getAnimal_22() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_22() );
+                        vendido.put("p_animal_23", cupo.getAnimal_23() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_23() );
+                        vendido.put("p_animal_24", cupo.getAnimal_24() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_24() );
+                        vendido.put("p_animal_25", cupo.getAnimal_25() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_25() );
+                        vendido.put("p_animal_26", cupo.getAnimal_26() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_26() );
+                        vendido.put("p_animal_27", cupo.getAnimal_27() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_27() );
+                        vendido.put("p_animal_28", cupo.getAnimal_28() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_28() );
+                        vendido.put("p_animal_29", cupo.getAnimal_29() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_29() );
+                        vendido.put("p_animal_30", cupo.getAnimal_30() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_30() );
+                        vendido.put("p_animal_31", cupo.getAnimal_31() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_31() );
+                        vendido.put("p_animal_32", cupo.getAnimal_32() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_32() );
+                        vendido.put("p_animal_33", cupo.getAnimal_33() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_33() );
+                        vendido.put("p_animal_34", cupo.getAnimal_34() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_34() );
+                        vendido.put("p_animal_35", cupo.getAnimal_35() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_35() );
+                        vendido.put("p_animal_36", cupo.getAnimal_36() >= cupo.getMaximo() ? cupo.getMaximo() : cupo.getAnimal_36() );
+                        
+                        jsonCupos.put(vendido);
+                    });
+                });
+            });
+        
+        
+        return jsonCupos;
+    }
+    public Map<String,Double> setearAnimal(int valor, double newAnimalValue, double actualValor,double valueMaximo){
+        Map<String,Double> rsp = new HashMap<>();
+        String key = "p_animal_" + valor;
+        switch(valor){
+            
+      
+        }
+        return rsp;
+    }
+
+
+
+
+
+    private void txtBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyReleased
+       panelCheckAnimales = new JPanel();
+       panelCheckAnimales.setLayout(new BoxLayout(panelCheckAnimales, BoxLayout.Y_AXIS));
+        String texto = txtBusqueda.getText().toLowerCase();
+       animales.stream().filter(a->
+               a.getText().toLowerCase().contains(texto)
+       ).collect(Collectors.toList())
+         .stream().forEach(t->{
+            panelCheckAnimales.add(t);
+         });
+       scrollAnimales.setViewportView(panelCheckAnimales);
+    }//GEN-LAST:event_txtBusquedaKeyReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String texto = txtBusqueda.getText().toLowerCase();
+        
+       animales.stream().filter(a->
+               a.getText().toLowerCase().contains(texto)
+       ).collect(Collectors.toList())
+        .stream().forEach(t->{
+            t.setSelected(true);
+        });
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       String texto = txtBusquedaSorteos.getText().toLowerCase();
+
+       sorteos.stream().filter(a->
+               a.getText().toLowerCase().contains(texto)
+       ).collect(Collectors.toList())
+         .stream().forEach(t->{
+            t.setSelected(true);
+         });
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtBusquedaSorteosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaSorteosKeyReleased
+      String texto = txtBusquedaSorteos.getText().toLowerCase();
+      panelCheckSorteos = new JPanel();
+       panelCheckSorteos.setLayout(new BoxLayout(panelCheckSorteos, BoxLayout.Y_AXIS));
+       sorteos.stream().filter(a->
+               a.getText().toLowerCase().contains(texto)
+       ).collect(Collectors.toList())
+         .stream().forEach(t->{
+            panelCheckSorteos.add(t);
+         });
+       scrollSorteos.setViewportView(panelCheckSorteos);
+    }//GEN-LAST:event_txtBusquedaSorteosKeyReleased
 
     private String getAgenciasSeleccionadas(){
         String agenciaSeleccionada ="";
@@ -662,7 +643,7 @@ public class AgregarCupo extends javax.swing.JFrame {
               animalesSeleccionado="";
               for(JCheckBox animal : animales){
                   if(animal.isSelected())
-                  animalesSeleccionado+=animal.getName()+",";
+                  animalesSeleccionado+=animal.getText()+",";
               }animalesSeleccionado = animalesSeleccionado.substring(0, animalesSeleccionado.length()-1);
           }
           return animalesSeleccionado;
@@ -674,7 +655,7 @@ public class AgregarCupo extends javax.swing.JFrame {
               sorteosSeleccionados="";
               for(JCheckBox sorteo : sorteos){
                    if(sorteo.isSelected())
-                  sorteosSeleccionados+=sorteo.getText().trim().toLowerCase().replace(" ", "")+",";
+                  sorteosSeleccionados+=sorteo.getText()+",";
               }sorteosSeleccionados = sorteosSeleccionados.substring(0, sorteosSeleccionados.length()-1);
           }
           return sorteosSeleccionados;
@@ -713,25 +694,14 @@ public class AgregarCupo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox c10am;
-    private javax.swing.JCheckBox c11am;
-    private javax.swing.JCheckBox c12pm;
-    private javax.swing.JCheckBox c1pm;
-    private javax.swing.JCheckBox c2pm;
-    private javax.swing.JCheckBox c3pm;
-    private javax.swing.JCheckBox c4pm;
-    private javax.swing.JCheckBox c5pm;
-    private javax.swing.JCheckBox c6pm;
-    private javax.swing.JCheckBox c7pm;
-    private javax.swing.JCheckBox c8am;
-    private javax.swing.JCheckBox c9am;
     private javax.swing.JCheckBox cbAgTodos;
     private javax.swing.JCheckBox cbAnimalesTodos;
-    private javax.swing.JCheckBox cbProgramaTodos;
     private javax.swing.JCheckBox cbSorteoTodos;
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -740,10 +710,12 @@ public class AgregarCupo extends javax.swing.JFrame {
     private javax.swing.JPanel panelAnimales;
     private javax.swing.JPanel panelCentral;
     private javax.swing.JPanel panelMonto;
-    private javax.swing.JPanel panelProgramas;
     private javax.swing.JPanel panelSorteos;
     private javax.swing.JPanel panelTitulo;
     private javax.swing.JScrollPane scrollAnimales;
+    private javax.swing.JScrollPane scrollSorteos;
+    private javax.swing.JTextField txtBusqueda;
+    private javax.swing.JTextField txtBusquedaSorteos;
     private javax.swing.JTextField txtMonto;
     // End of variables declaration//GEN-END:variables
 
@@ -753,7 +725,7 @@ public class AgregarCupo extends javax.swing.JFrame {
         if (true) {
             switch (numero) {
                 case 0:
-                    animal = "Delfin";
+                    animal = "Delfín";
                     break;
                 case -1:
                     animal = "Ballena";
@@ -771,7 +743,7 @@ public class AgregarCupo extends javax.swing.JFrame {
                     animal = "Alacrán";
                     break;
                 case 5:
-                    animal = "Leon";
+                    animal = "León";
                     break;
                 case 6:
                     animal = "Rana";
@@ -783,7 +755,7 @@ public class AgregarCupo extends javax.swing.JFrame {
                     animal = "Ratón";
                     break;
                 case 9:
-                    animal = "Aguila";
+                    animal = "Águila";
                     break;
                 case 10:
                     animal = "Tigre";
@@ -872,111 +844,51 @@ public class AgregarCupo extends javax.swing.JFrame {
     }
     
     private void iniciar() {
+         String myFecha = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
+        
+        
         if(myAgencias.isEmpty()){
             myAgencias = (ArrayList) new Agencia().listarAgencias().clone();
+            
         }
         
         fechaDesde.setDate(new Date());
         fechaHasta.setDate(new Date());
         
         new ScrollSens(scrollAnimales,40);
-        panelProgramas.setLayout(new BoxLayout(panelProgramas, BoxLayout.Y_AXIS));
         panelAgencias.setLayout(new BoxLayout(panelAgencias, BoxLayout.Y_AXIS));
         panelSorteos.setLayout(new BoxLayout(panelSorteos, BoxLayout.Y_AXIS));
         panelAnimales.setLayout(new BoxLayout(panelAnimales, BoxLayout.Y_AXIS));
         
-        panelProgramas.setSize(220, panelProgramas.getHeight());
         panelAgencias.setSize(220, panelAgencias.getHeight());
         panelSorteos.setSize(220, panelSorteos.getHeight());
         panelAnimales.setSize(220, panelAnimales.getHeight());
         
-        agregarProgramas();
         agregarAgencias();
-        agregarSorteos();
         agregarAnimales();
-    }
-    private void agregarProgramas(){
-        ActionListener listener = e -> {
-            cbProgramaTodos.setSelected(
-                    programas.stream()
-                    .filter(
-                        p ->p.isSelected()
-                    ).count() == programas.size() ? true : false
-                );
-        };
-        
-        
-        JCheckBox lottoActivo = new JCheckBox();
-        lottoActivo.setText("LottoActivo");
-        lottoActivo.setName("LottoActivo");
-        lottoActivo.addActionListener(listener);
-        lottoActivo.setFont(segoui);
-        programas.add(lottoActivo);
-        
-        JCheckBox granjita = new JCheckBox();
-        granjita.setText("Granjita");
-        granjita.setName("Granjita");
-        granjita.addActionListener(listener);
-        granjita.setFont(segoui);
-        programas.add(granjita);
-        
-        
-        panelProgramas.add(lottoActivo);
-        panelProgramas.add(granjita);
+        agregarSorteos();
     }
    
+   
     private void agregarAgencias(){
-         ActionListener listener = e -> {
-            cbAgTodos.setSelected(
-                    agencias.stream()
-                    .filter(
-                        p ->p.isSelected()
-                    ).count() == agencias.size() ? true : false
-                );
-        };
+        
+         
          
          for(Agencia agencia:myAgencias){
              JCheckBox temp = new JCheckBox();
              temp.setName(agencia.getId()+"");
              temp.setText(agencia.getNombreAgencia());
-             temp.addActionListener(listener);
+             temp.setName(agencia.getId()+"");
              temp.setFont(segoui);
              agencias.add(temp);
              panelAgencias.add(temp);
          }
     }
     
-    private void agregarSorteos(){
-        sorteos.add(c8am);
-        sorteos.add(c9am);
-        sorteos.add(c10am);
-        sorteos.add(c11am);
-        sorteos.add(c12pm);
-        sorteos.add(c1pm);
-        sorteos.add(c2pm);
-        sorteos.add(c3pm);
-        sorteos.add(c4pm);
-        sorteos.add(c5pm);
-        sorteos.add(c6pm);
-        sorteos.add(c7pm);
-        
-         ActionListener listener = e -> {
-            cbSorteoTodos.setSelected(
-                    sorteos.stream()
-                    .filter(
-                        p ->p.isSelected()
-                    ).count() == sorteos.size() ? true : false
-                );
-        };
-        for(JCheckBox sorteo:sorteos){
-            sorteo.addActionListener(listener);
-            sorteo.setFont(segoui);
-            panelSorteos.add(sorteo);
-        }
-    }
+   
     
     private void agregarAnimales(){
-        JPanel panelAnimalesx = new JPanel();
+        
         ActionListener listener = e -> {
             cbAnimalesTodos.setSelected(
                     animales.stream()
@@ -993,9 +905,9 @@ public class AgregarCupo extends javax.swing.JFrame {
         ballena.setFont(segoui);
         
         animales.add(ballena);
-        panelAnimalesx.add(ballena);
+        panelCheckAnimales.add(ballena);
         
-        panelAnimalesx.setLayout(new BoxLayout(panelAnimalesx, BoxLayout.Y_AXIS));
+        panelCheckAnimales.setLayout(new BoxLayout(panelCheckAnimales, BoxLayout.Y_AXIS));
         for (int i = 0; i < 37; i++) {
             JCheckBox temp = new JCheckBox();
             temp.setName(i+"");
@@ -1003,16 +915,15 @@ public class AgregarCupo extends javax.swing.JFrame {
             temp.addActionListener(listener);
             temp.setFont(segoui);
             
-            panelAnimalesx.add(temp);
+            panelCheckAnimales.add(temp);
             animales.add(temp);
         }
-        panelAnimalesx.setSize(panelAnimales.getWidth()-10, 500);
-        scrollAnimales.setViewportView(panelAnimalesx);
+        panelCheckAnimales.setSize(panelAnimales.getWidth()-10, 500);
+        scrollAnimales.setViewportView(panelCheckAnimales);
     }
 
     private boolean validarCamposVacios() {
          return agencias.stream().filter(a-> a.isSelected()).count()>0 &&
-                programas.stream().filter(p-> p.isSelected()).count()>0 && 
                  animales.stream().filter(a-> a.isSelected()).count()>0 &&
                  sorteos.stream().filter(s-> s.isSelected()).count()>0 &&
                  !txtMonto.getText().isEmpty();
@@ -1022,5 +933,30 @@ public class AgregarCupo extends javax.swing.JFrame {
     }
     public String getFechaHasta(){
         return new SimpleDateFormat("yyyy-MM-dd").format(fechaHasta.getDate());
+    }
+
+    private void agregarSorteos() {
+        new ScrollSens(scrollSorteos,24);
+        panelCheckSorteos.setLayout(new BoxLayout(panelCheckSorteos, BoxLayout.Y_AXIS));
+        loterias = (ArrayList) new Loteria().getLoterias().clone();
+        sorteos.clear();
+        
+        for(Loteria loteria:loterias){panelCheckSorteos.add(new JLabel("    "));
+            for(HoraSorteo horaSorteo : loteria.getSorteos()){
+                JCheckBoxPrograma temp = new JCheckBoxPrograma();
+                temp.setFont(new Font("Segoe UI",Font.PLAIN,16));
+                temp.setSize(120, 22);
+                String completo = loteria.getNombre()+" "+horaSorteo.getHoraSorteo();
+                temp.setText(completo);
+                temp.setName(horaSorteo.getHoraSorteo());
+                temp.setPrograma(loteria.getNombre());  
+                sorteos.add(temp);
+                panelCheckSorteos.add(temp);
+            }
+            
+        }
+        panelCheckSorteos.add(new JLabel("    "));
+        panelCheckSorteos.add(new JLabel("    "));
+        scrollSorteos.setViewportView(panelCheckSorteos);
     }
 }

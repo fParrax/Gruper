@@ -11,17 +11,17 @@
     
     <target name= "-post-jar">
         <jar jarfile="${dist.jar}" update="true">
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\AbsoluteLayout.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\commons-codec-1.13.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\commons-dbcp2-2.7.0.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\commons-logging-1.2.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\commons-pool2-2.8.0.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\json.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\lombok.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\mysql-connector-java-8.0.29.jar" excludes="META-INF/*"/>
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\RSNotify v1.0.jar" excludes="META-INF/*"/> 
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\RSTableMetro.jar" excludes="META-INF/*"/> 
-            <zipfileset src="/home/franklinp/Escritorio/Gestión Franklin Parra/1. Actividades/01. En curso/AG/Libs\jcalendar-1.4.jar" excludes="META-INF/*"/> 
+           <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\commons-codec-1.13.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\commons-dbcp2-2.7.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\commons-logging-1.2.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\commons-pool2-2.8.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\commons-net-3.8.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\json.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\lombok.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\mysql-connector-java-8.0.29.jar" excludes="META-INF/*"/>
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\RSNotify v1.0.jar" excludes="META-INF/*"/> 
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\RSTableMetro.jar" excludes="META-INF/*"/> 
+            <zipfileset src="C:\Users\Cletox\Documents\xpFrankDev/AG/LibsGruper\jcalendar-1.4.jar" excludes="META-INF/*"/> 
         </jar>
     </target>
     

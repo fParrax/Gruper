@@ -4,37 +4,42 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-
-
+import org.json.JSONArray;
 
 public class CupoAnimal {
 
-    int id = -1;
-    String fecha, programa, sorteo,animalVendido;
+    int id = -1, idGrupero,idAgencia, idBanquero;
+    String fecha, programa, sorteo, animalVendido;
     double maximo, animal_0, animal_00,
             animal_1, animal_2, animal_3, animal_4, animal_5, animal_6, animal_7, animal_8, animal_9, animal_10,
             animal_11, animal_12, animal_13, animal_14, animal_15, animal_16, animal_17, animal_18, animal_19, animal_20,
             animal_21, animal_22, animal_23, animal_24, animal_25, animal_26, animal_27, animal_28, animal_29, animal_30,
-            animal_31, animal_32, animal_33, animal_34, animal_35, animal_36,montoVendido;
+            animal_31, animal_32, animal_33, animal_34, animal_35, animal_36, montoVendido;
     PreparedStatement pst;
     ResultSet rs;
 
     public CupoAnimal() {
     }
-    public CupoAnimal(String programa,String sorteo,String fecha,String animalVendido,double montoVendido){
-         CupoAnimal temp = new CupoAnimal().get(fecha, programa, sorteo, 100);
-        this.programa=programa;
-        this.sorteo=sorteo;
-        this.fecha=fecha;
-        this.animalVendido=animalVendido;
-        this.montoVendido=montoVendido + temp.getAnimal(animalVendido);
-    }
 
-    public CupoAnimal(int id, String fecha, String programa, String sorteo, double maximo, double animal_0, double animal_00, double animal_1, double animal_2, double animal_3, double animal_4, double animal_5, double animal_6, double animal_7, double animal_8, double animal_9, double animal_10, double animal_11, double animal_12, double animal_13, double animal_14, double animal_15, double animal_16, double animal_17, double animal_18, double animal_19, double animal_20, double animal_21, double animal_22, double animal_23, double animal_24, double animal_25, double animal_26, double animal_27, double animal_28, double animal_29, double animal_30, double animal_31, double animal_32, double animal_33, double animal_34, double animal_35, double animal_36) {
+    public CupoAnimal(String programa, String sorteo, String fecha, String animalVendido, double montoVendido) {
+        this.programa = programa;
+        this.sorteo = sorteo;
+        this.fecha = fecha;
+        this.animalVendido = animalVendido;
+        this.montoVendido = montoVendido + getAnimal(animalVendido);
+    }
+    public CupoAnimal(int id,int idAgencia, int idGrupero, int idBanquero, String fecha, String programa, String sorteo, double maximo, double animal_0, double animal_00, double animal_1, double animal_2, double animal_3, double animal_4, double animal_5, double animal_6, double animal_7, double animal_8, double animal_9, double animal_10, double animal_11, double animal_12, double animal_13, double animal_14, double animal_15, double animal_16, double animal_17, double animal_18, double animal_19, double animal_20, double animal_21, double animal_22, double animal_23, double animal_24, double animal_25, double animal_26, double animal_27, double animal_28, double animal_29, double animal_30, double animal_31, double animal_32, double animal_33, double animal_34, double animal_35, double animal_36) {
         this.id = id;
+        this.idAgencia=idAgencia;
+        this.idGrupero = idGrupero;
+        this.idBanquero = idBanquero;
         this.fecha = fecha;
         this.programa = programa;
         this.sorteo = sorteo;
@@ -79,92 +84,24 @@ public class CupoAnimal {
         this.animal_36 = animal_36;
     }
 
-    public boolean updateMaximo (int id,double maximo){
-        try ( Connection con = new ConectarDBSQLLite().getCon()) {
-               String sql =" update cupo_animal set maximo =? where id=?";
-               pst = con.prepareStatement(sql);
-               pst.setDouble(1,maximo);
-               pst.setInt(2,id);
-               return pst.executeUpdate()>0?true:false;
-        }catch (Exception e) {
-            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, e);
-            return false;
-        } finally {
-            try {
-                pst.close();
-                rs.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
-    
-    public CupoAnimal get(String fechax, String programax, String sorteox, double cupoTotal) {
-        String sql = "select * from cupo_animal where fecha=? and lower (programa) like lower ('%"+programax+"%') and sorteo=?";
-boolean actualizar = false;
-int id = 0;
 
-        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+    public ArrayList getCupoAgencia(int idAgencia, String fechax) {
+        ArrayList<CupoAnimal> cupos = new ArrayList();
+        String sql = "call `sp.getCuposAgencia` (?,?)";
+        int id = 0;
+
+        try (Connection con = new ConectarDBCloud("ag").getCon()) {
             pst = con.prepareStatement(sql);
-            pst.setString(1, fechax);
-            pst.setString(2, sorteox.toLowerCase().replace(" ", ""));
+            pst.setInt(1, idAgencia);
+            pst.setString(2, fechax);
             rs = pst.executeQuery();
-            CupoAnimal cupo = new CupoAnimal();
-            if(rs.next()) {
-                if(cupoTotal > rs.getDouble("maximo")){
-                    actualizar=true;
-                    id = rs.getInt("id");
-                    
-                         return  new CupoAnimal(
+            while (rs.next()) {
+
+                cupos.add(new CupoAnimal(
                         rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        cupoTotal,
-                        rs.getDouble(6),
-                        rs.getDouble(7),
-                        rs.getDouble(8),
-                        rs.getDouble(9),
-                        rs.getDouble(10),
-                        rs.getDouble(11),
-                        rs.getDouble(12),
-                        rs.getDouble(13),
-                        rs.getDouble(14),
-                        rs.getDouble(15),
-                        rs.getDouble(16),
-                        rs.getDouble(17),
-                        rs.getDouble(18),
-                        rs.getDouble(19),
-                        rs.getDouble(20),
-                        rs.getDouble(21),
-                        rs.getDouble(22),
-                        rs.getDouble(23),
-                        rs.getDouble(24),
-                        rs.getDouble(25),
-                        rs.getDouble(26),
-                        rs.getDouble(27),
-                        rs.getDouble(28),
-                        rs.getDouble(29),
-                        rs.getDouble(30),
-                        rs.getDouble(31),
-                        rs.getDouble(32),
-                        rs.getDouble(33),
-                        rs.getDouble(34),
-                        rs.getDouble(35),
-                        rs.getDouble(36),
-                        rs.getDouble(37),
-                        rs.getDouble(38),
-                        rs.getDouble(39),
-                        rs.getDouble(40),
-                        rs.getDouble(41),
-                        rs.getDouble(42),
-                        rs.getDouble(43));
-                    
-                }else{
-                    return  new CupoAnimal(
-                        rs.getInt(1),
+                        rs.getInt("idAgencia"),
+                        rs.getInt("idGrupero"),
+                        rs.getInt("idBanquero"),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
@@ -206,47 +143,95 @@ int id = 0;
                         rs.getDouble(40),
                         rs.getDouble(41),
                         rs.getDouble(42),
-                        rs.getDouble(43));
+                        rs.getDouble(43))
+                );
 
-                }
-            } else{
-                return insert(fechax, programax, sorteox,cupoTotal);
             }
+
         } catch (Exception e) {
             Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, e);
-            return new CupoAnimal();
+            //return new CupoAnimal();
         } finally {
             try {
                 pst.close();
                 rs.close();
-                boolean goUpdate = actualizar ? updateMaximo(id,cupoTotal) : false;
+                //boolean goUpdate = actualizar ? updateMaximo(id,cupoTotal) : false;
             } catch (SQLException ex) {
                 Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, ex);
             }
         }
-        
-        
+
+        return cupos;
     }
 
-    private CupoAnimal insert(String fechax, String programax, String sorteox,double cupoTotal) {
-        int resultado = 0;
-        String sql = "insert into cupo_animal (fecha,programa,sorteo,maximo) values (?,?,?,?)";
+    public ArrayList getCupoAgenciaByRangoFecha(String fechaInicio, String fechaFin) {
+        ArrayList<CupoAnimal> cupos = new ArrayList();
+        String sql = "call `sp.getAllCupoAnimal` (?,?)";
+        int id = 0;
 
-        try ( Connection con = new ConectarDBSQLLite().getCon()) {
+        try (Connection con = new ConectarDBCloud("ag").getCon()) {
             pst = con.prepareStatement(sql);
-            pst.setString(1, fechax);
-            pst.setString(2, programax);
-            pst.setString(3, sorteox);
-            pst.setDouble(4, cupoTotal);
+            pst.setString(1, fechaInicio);
+            pst.setString(2, fechaFin);
+            rs = pst.executeQuery();
+            while (rs.next()) {
 
-            resultado = pst.executeUpdate();
+                cupos.add(new CupoAnimal(
+                        rs.getInt(1),
+                        rs.getInt("idAgencia"),
+                        rs.getInt("idGrupero"),
+                        rs.getInt("idBanquero"),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getDouble(5),
+                        rs.getDouble(6),
+                        rs.getDouble(7),
+                        rs.getDouble(8),
+                        rs.getDouble(9),
+                        rs.getDouble(10),
+                        rs.getDouble(11),
+                        rs.getDouble(12),
+                        rs.getDouble(13),
+                        rs.getDouble(14),
+                        rs.getDouble(15),
+                        rs.getDouble(16),
+                        rs.getDouble(17),
+                        rs.getDouble(18),
+                        rs.getDouble(19),
+                        rs.getDouble(20),
+                        rs.getDouble(21),
+                        rs.getDouble(22),
+                        rs.getDouble(23),
+                        rs.getDouble(24),
+                        rs.getDouble(25),
+                        rs.getDouble(26),
+                        rs.getDouble(27),
+                        rs.getDouble(28),
+                        rs.getDouble(29),
+                        rs.getDouble(30),
+                        rs.getDouble(31),
+                        rs.getDouble(32),
+                        rs.getDouble(33),
+                        rs.getDouble(34),
+                        rs.getDouble(35),
+                        rs.getDouble(36),
+                        rs.getDouble(37),
+                        rs.getDouble(38),
+                        rs.getDouble(39),
+                        rs.getDouble(40),
+                        rs.getDouble(41),
+                        rs.getDouble(42),
+                        rs.getDouble(43))
+                );
+
+            }
 
         } catch (Exception e) {
             Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, e);
-            return new CupoAnimal();
         } finally {
             try {
                 pst.close();
@@ -257,11 +242,228 @@ int id = 0;
             }
         }
 
-        return resultado > 0
-                ? get(fechax, programax, sorteox,cupoTotal)
-                : null;
+        return cupos;
+    }
+    
+    public CupoAnimal setVendido(String animal, double monto) {
+
+        switch (animal) {
+            case "00":
+                this.animal_00 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "0":
+                this.animal_0 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "01":
+                this.animal_1 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "1":
+                this.animal_1 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "02":
+                this.animal_2 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "2":
+                this.animal_2 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "03":
+                this.animal_3 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "3":
+                this.animal_3 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "04":
+                this.animal_4 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "4":
+                this.animal_4 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "05":
+                this.animal_5 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "5":
+                this.animal_5 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "06":
+                this.animal_6 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "6":
+                this.animal_6 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "07":
+                this.animal_7 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "7":
+                this.animal_7 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "08":
+                this.animal_8 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "8":
+                this.animal_8 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "09":
+                this.animal_9 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "9":
+                this.animal_9 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "10":
+                this.animal_10 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "11":
+                this.animal_11 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "12":
+                this.animal_12 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "13":
+                this.animal_13 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "14":
+                this.animal_14 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "15":
+                this.animal_15 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "16":
+                this.animal_16 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "17":
+                this.animal_17 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "18":
+                this.animal_18 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "19":
+                this.animal_19 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "20":
+                this.animal_20 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "21":
+                this.animal_21 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "22":
+                this.animal_22 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "23":
+                this.animal_23 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "24":
+                this.animal_24 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "25":
+                this.animal_25 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "26":
+                this.animal_26 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "27":
+                this.animal_27 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "28":
+                this.animal_28 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "29":
+                this.animal_29 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "30":
+                this.animal_30 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "31":
+                this.animal_31 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "32":
+                this.animal_32 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "33":
+                this.animal_33 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "34":
+                this.animal_34 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "35":
+                this.animal_35 += monto;
+                setAnimalVendido(animal);
+                break;
+            case "36":
+                this.animal_36 += monto;
+                setAnimalVendido(animal);
+                break;
+
+        }
+        return this;
     }
 
+    public void actualizarCupo(JSONArray jsonAnimalesVendidos) {
+        String sql = "call `sp.UpdateCupoAnimalAgenciaByJson` (?)";
+
+        try (Connection con = new ConectarDBCloud("ag").getCon()) {
+            pst = con.prepareCall(sql);
+            pst.setString(1, jsonAnimalesVendidos.toString());
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }
+
+    
+   
     public double getCupoActual(String animal) {
 
         switch (animal) {
@@ -271,20 +473,38 @@ int id = 0;
                 return this.maximo - this.animal_0;
             case "1":
                 return this.maximo - this.animal_1;
+            case "01":
+                return this.maximo - this.animal_1;
+            case "02":
+                return this.maximo - this.animal_2;
             case "2":
                 return this.maximo - this.animal_2;
+            case "03":
+                return this.maximo - this.animal_3;
             case "3":
                 return this.maximo - this.animal_3;
+            case "04":
+                return this.maximo - this.animal_4;
             case "4":
                 return this.maximo - this.animal_4;
+            case "05":
+                return this.maximo - this.animal_5;
             case "5":
                 return this.maximo - this.animal_5;
+            case "06":
+                return this.maximo - this.animal_6;
             case "6":
                 return this.maximo - this.animal_6;
+            case "07":
+                return this.maximo - this.animal_7;
             case "7":
                 return this.maximo - this.animal_7;
+            case "08":
+                return this.maximo - this.animal_8;
             case "8":
                 return this.maximo - this.animal_8;
+            case "09":
+                return this.maximo - this.animal_9;
             case "9":
                 return this.maximo - this.animal_9;
             case "10":
@@ -346,7 +566,7 @@ int id = 0;
         }
 
     }
-    
+
     public double getAnimal(String animal) {
 
         switch (animal) {
@@ -431,108 +651,13 @@ int id = 0;
         }
 
     }
-  
-    public CupoAnimal setVendido(String animal,double monto) {
-
-        switch (animal) {
-            case "00":this.animal_00+=monto;break;
-            case "0":this.animal_0+=monto;break;
-            case "1":this.animal_1+=monto;break;
-            case "2":this.animal_2+=monto;break;
-            case "3":this.animal_3+=monto;break;
-            case "4":this.animal_4+=monto;break;
-            case "5":this.animal_5+=monto;break;
-            case "6":this.animal_6+=monto;break;
-            case "7":this.animal_7+=monto;break;
-            case "8":this.animal_8+=monto;break;
-            case "9":this.animal_9+=monto;break;
-            case "10":this.animal_10+=monto;break;
-            case "11":this.animal_11+=monto;break;
-            case "12":this.animal_12+=monto;break;
-            case "13":this.animal_13+=monto;break;
-            case "14":this.animal_14+=monto;break;
-            case "15":this.animal_15+=monto;break;
-            case "16":this.animal_16+=monto;break;
-            case "17":this.animal_17+=monto;break;
-            case "18":this.animal_18+=monto;break;
-            case "19":this.animal_19+=monto;break;
-            case "20":this.animal_20+=monto;break;
-            case "21":this.animal_21+=monto;break;
-            case "22":this.animal_22+=monto;break;
-            case "23":this.animal_23+=monto;break;
-            case "24":this.animal_24+=monto;break;
-            case "25":this.animal_25+=monto;break;
-            case "26":this.animal_26+=monto;break;
-            case "27":this.animal_27+=monto;break;
-            case "28":this.animal_28+=monto;break;
-            case "29":this.animal_29+=monto;break;
-            case "30":this.animal_30+=monto;break;
-            case "31":this.animal_31+=monto;break;
-            case "32":this.animal_32+=monto;break;
-            case "33":this.animal_33+=monto;break;
-            case "34":this.animal_34+=monto;break;
-            case "35":this.animal_35+=monto;break;
-            case "36":this.animal_36+=monto;break;
-            
-        }
-        return this;
-    }
-    
-    public void updateCupo() {
-
-        String sql = "update cupo_animal set animal_"+animalVendido+"=? "
-                
-                + " where fecha=? and programa=? and sorteo=?";
-        PreparedStatement pst;
-
-        try ( Connection con = new ConectarDBSQLLite().getCon()) {
-            pst = con.prepareStatement(sql);
-                
-                pst.setDouble(1,montoVendido );
-                pst.setString(2,fecha);
-                pst.setString(3,programa);
-                pst.setString(4,sorteo);
-                
-                pst.execute();
-        } catch (Exception e) {
-            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-
-    public boolean updateMaximo(double monto){
-       
-
-        try ( Connection con = new ConectarDBSQLLite().getCon()) {
-             String sql = "ALTER TABLE cupo_animal DROP  maximo";
-            pst = con.prepareStatement(sql);
-            pst.executeQuery();
-
-            
-             sql = "ALTER TABLE cupo_animal ADD COLUMN maximo REAL DEFAULT "+monto;
-            pst = con.prepareStatement(sql);
-            pst.executeQuery();
-
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, e);
-            return false;
-        } finally {
-            try {
-                pst.close();
-                rs.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(CupoAnimal.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
 
     @Override
     public String toString() {
-        return "CupoAnimal{" + "id=" + id + ", fecha=" + fecha + ", programa=" + programa + ", sorteo=" + sorteo + ", animalVendido=" + animalVendido + ", maximo=" + maximo + ", animal_0=" + animal_0 + ", animal_00=" + animal_00 + ", animal_1=" + animal_1 + ", animal_2=" + animal_2 + ", animal_3=" + animal_3 + ", animal_4=" + animal_4 + ", animal_5=" + animal_5 + ", animal_6=" + animal_6 + ", animal_7=" + animal_7 + ", animal_8=" + animal_8 + ", animal_9=" + animal_9 + ", animal_10=" + animal_10 + ", animal_11=" + animal_11 + ", animal_12=" + animal_12 + ", animal_13=" + animal_13 + ", animal_14=" + animal_14 + ", animal_15=" + animal_15 + ", animal_16=" + animal_16 + ", animal_17=" + animal_17 + ", animal_18=" + animal_18 + ", animal_19=" + animal_19 + ", animal_20=" + animal_20 + ", animal_21=" + animal_21 + ", animal_22=" + animal_22 + ", animal_23=" + animal_23 + ", animal_24=" + animal_24 + ", animal_25=" + animal_25 + ", animal_26=" + animal_26 + ", animal_27=" + animal_27 + ", animal_28=" + animal_28 + ", animal_29=" + animal_29 + ", animal_30=" + animal_30 + ", animal_31=" + animal_31 + ", animal_32=" + animal_32 + ", animal_33=" + animal_33 + ", animal_34=" + animal_34 + ", animal_35=" + animal_35 + ", animal_36=" + animal_36 + ", montoVendido=" + montoVendido + '}';
+        return "CupoAnimal{" + "id=" + id + ", idGrupero=" + idGrupero + ", idAgencia=" + idAgencia + ", idBanquero=" + idBanquero + ", fecha=" + fecha + ", programa=" + programa + ", sorteo=" + sorteo + ", animalVendido=" + animalVendido + ", maximo=" + maximo + ", animal_0=" + animal_0 + ", animal_00=" + animal_00 + ", animal_1=" + animal_1 + ", animal_2=" + animal_2 + ", animal_3=" + animal_3 + ", animal_4=" + animal_4 + ", animal_5=" + animal_5 + ", animal_6=" + animal_6 + ", animal_7=" + animal_7 + ", animal_8=" + animal_8 + ", animal_9=" + animal_9 + ", animal_10=" + animal_10 + ", animal_11=" + animal_11 + ", animal_12=" + animal_12 + ", animal_13=" + animal_13 + ", animal_14=" + animal_14 + ", animal_15=" + animal_15 + ", animal_16=" + animal_16 + ", animal_17=" + animal_17 + ", animal_18=" + animal_18 + ", animal_19=" + animal_19 + ", animal_20=" + animal_20 + ", animal_21=" + animal_21 + ", animal_22=" + animal_22 + ", animal_23=" + animal_23 + ", animal_24=" + animal_24 + ", animal_25=" + animal_25 + ", animal_26=" + animal_26 + ", animal_27=" + animal_27 + ", animal_28=" + animal_28 + ", animal_29=" + animal_29 + ", animal_30=" + animal_30 + ", animal_31=" + animal_31 + ", animal_32=" + animal_32 + ", animal_33=" + animal_33 + ", animal_34=" + animal_34 + ", animal_35=" + animal_35 + ", animal_36=" + animal_36 + ", montoVendido=" + montoVendido + '}';
     }
 
+    
     public int getId() {
         return id;
     }
@@ -555,6 +680,14 @@ int id = 0;
 
     public void setPrograma(String programa) {
         this.programa = programa;
+    }
+
+    public int getIdAgencia() {
+        return idAgencia;
+    }
+
+    public void setIdAgencia(int idAgencia) {
+        this.idAgencia = idAgencia;
     }
 
     public String getSorteo() {
@@ -683,6 +816,22 @@ int id = 0;
 
     public void setAnimal_11(double animal_11) {
         this.animal_11 = animal_11;
+    }
+
+    public int getIdGrupero() {
+        return idGrupero;
+    }
+
+    public void setIdGrupero(int idGrupero) {
+        this.idGrupero = idGrupero;
+    }
+
+    public int getIdBanquero() {
+        return idBanquero;
+    }
+
+    public void setIdBanquero(int idBanquero) {
+        this.idBanquero = idBanquero;
     }
 
     public double getAnimal_12() {
@@ -892,6 +1041,5 @@ int id = 0;
     public void setMontoVendido(double montoVendido) {
         this.montoVendido = montoVendido;
     }
-    
-    
+
 }
