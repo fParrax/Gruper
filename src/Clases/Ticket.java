@@ -94,8 +94,8 @@ public class Ticket {
             while (rs.next()) {
                 
                 Agencia agenciaTemp = new Agencia(
-                        rs.getInt("id"),
-                            rs.getInt("numTicketx"),
+                        rs.getInt("myIdAgencia"),
+                            rs.getInt("myNumTicket"),
                             rs.getInt("minutos_cierre"),
                             rs.getInt("jugadaMinima"),
                             rs.getInt("cupoAnimal"),
@@ -103,7 +103,7 @@ public class Ticket {
                             rs.getString("nombreAgencia"),
                             rs.getString("username"),
                             rs.getString("pasword"),
-                            rs.getString("estado"),
+                            rs.getString("myEstado"),
                             rs.getDouble("comision")
                 );
                 
@@ -316,12 +316,21 @@ public class Ticket {
         return "Ticket{" + "id=" + id + ", numTicket=" + numTicket + ", fecha=" + fecha + ", horaTicket=" + ", serial=" + serial + ", estado=" + estado + ", totalJugado=" + totalJugado + ", totalPremio=" + totalPremio + ", montoPagado=" + montoPagado + '}';
     }
 
-    
     @Override
     public int hashCode() {
-        return Objects.hash(id, fecha,agencia,serial,numTicket, estado, totalJugado, totalPremio, montoPagado );
+        int hash = 3;
+        hash = 97 * hash + this.id;
+        hash = 97 * hash + this.numTicket;
+        hash = 97 * hash + Objects.hashCode(this.fecha);
+        hash = 97 * hash + Objects.hashCode(this.serial);
+        hash = 97 * hash + Objects.hashCode(this.estado);
+        hash = 97 * hash + Objects.hashCode(this.agencia);
+        hash = 97 * hash + Float.floatToIntBits(this.totalJugado);
+        hash = 97 * hash + Float.floatToIntBits(this.totalPremio);
+        hash = 97 * hash + Float.floatToIntBits(this.montoPagado);
+        return hash;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -360,6 +369,8 @@ public class Ticket {
         }
         return Objects.equals(this.agencia, other.agencia);
     }
+
+    
     
     
     private String convertJugadasToJSON(){

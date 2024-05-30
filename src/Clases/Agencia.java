@@ -53,7 +53,7 @@ public class Agencia {
             while (rs.next()) {
                 my = new Agencia(
                         rs.getInt("id"),
-                        rs.getInt("numTicketx"),
+                        rs.getInt("numTicket"),
                         rs.getInt("minutos_cierre"),
                         rs.getInt("jugadaMinima"),
                         rs.getInt("cupoAnimal"),
@@ -272,7 +272,7 @@ public class Agencia {
             while (rs.next()) {
                 lista.add(new Agencia(
                         rs.getInt("id"),
-                        rs.getInt("numTicketx"),
+                        rs.getInt("numTicket"),
                         rs.getInt("minutos_cierre"),
                         rs.getInt("jugadaMinima"),
                         rs.getInt("cupoAnimal"),
